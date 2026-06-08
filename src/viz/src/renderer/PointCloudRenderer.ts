@@ -74,12 +74,17 @@ export class PointCloudRenderer {
   ];
 
   private intensityToColors(intensities: Float32Array): Float32Array {
+    // Percentile stretch: map [p2, p98] → [0, 1] so the colormap spans
+    // the actual data range regardless of sensor calibration or scene bias.
+    const sorted = Float32Array.from(intensities).sort();
+    const p2  = sorted[Math.max(0, Math.floor(sorted.length * 0.02))];
+    const p98 = sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.98))];
+    const range = p98 - p2 || 1;
+
     const colors = new Float32Array(intensities.length * 3);
     for (let i = 0; i < intensities.length; i++) {
-      const [r, g, b] = PointCloudRenderer.sampleRamp(
-        Math.max(0, Math.min(1, intensities[i])),
-        PointCloudRenderer.INTENSITY_STOPS,
-      );
+      const t = Math.max(0, Math.min(1, (intensities[i] - p2) / range));
+      const [r, g, b] = PointCloudRenderer.sampleRamp(t, PointCloudRenderer.INTENSITY_STOPS);
       colors[i * 3]     = r;
       colors[i * 3 + 1] = g;
       colors[i * 3 + 2] = b;

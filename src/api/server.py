@@ -56,6 +56,7 @@ async def _execute() -> None:
             "--output", str(OUTPUT_DIR),
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            cwd=str(ROOT),
         )
         _, stderr = await proc.communicate()
         if proc.returncode == 0:
