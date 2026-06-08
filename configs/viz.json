@@ -1,0 +1,20 @@
+{
+  "viewer": {
+    "backgroundColorHex": "#0d1117",
+    "pointSizeMeters": 0.04,
+    "cameraFovDegrees": 60,
+    "nearClipMeters": 0.1,
+    "farClipMeters": 1000,
+    "cameraPositionWorld": [20, -30, 20],
+    "cameraLookAtWorld": [0, 0, 0],
+    "antialias": true,
+    "demoFeatureLineWorld": [[0, 0, 0], [20, 0, 0]],
+    "demoPointCount": 4096,
+    "syntheticPointCount": 500000,
+    "benchmarkFrameCount": 180,
+    "syntheticExtentMeters": 80,
+    "syntheticHeightMeters": 4,
+    "syntheticCenterOffset": 0.5,
+    "intensityAverageDivisor": 2
+  }
+}

@@ -26,3 +26,24 @@ Target: `< 80 ms`
 Status: PASS
 
 Measured speedup: `2.14x`
+
+## Three.js Viewer
+
+Command:
+
+```bash
+docker compose up -d viz --build
+VIEWER_BENCHMARK_HEADLESS=0 node scripts/measure_viewer_fps.mjs 'http://127.0.0.1:5173/?benchmark=1'
+```
+
+Input: 500,000 synthetic world-frame points generated from `configs/viz.json`.
+
+| Renderer | Points | Frames | Average FPS |
+|---|---:|---:|---:|
+| Three.js BufferGeometry, GPU Chrome | 500,000 | 190 | 60.66 |
+
+Target: `≥ 30 FPS`
+
+Status: PASS
+
+Note: headless SwiftShader is useful as a smoke path but is not the GPU performance target.

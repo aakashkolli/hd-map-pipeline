@@ -7,10 +7,10 @@ export class PointCloudRenderer {
   private material: THREE.PointsMaterial;
   private mesh: THREE.Points;
 
-  constructor(private readonly scene: THREE.Scene) {
+  constructor(private readonly scene: THREE.Scene, pointSizeMeters: number) {
     this.geometry = new THREE.BufferGeometry();
     this.material = new THREE.PointsMaterial({
-      size: 0.04,
+      size: pointSizeMeters,
       vertexColors: true,
       sizeAttenuation: true,
     });

@@ -39,8 +39,9 @@ def test_color_mode_updates_color_buffer_without_geometry_rebuild():
 #    BufferAttribute uploads. No per-point object allocation is used.
 #
 # 4. KNOWN LIMITATIONS
-#    Static analysis verifies API usage but does not measure FPS. Real 500K
-#    point performance still needs browser DevTools measurement.
+#    Static analysis verifies API usage but does not measure FPS directly.
+#    Browser FPS is measured separately by scripts/measure_viewer_fps.mjs
+#    against the configured 500K benchmark scene.
 #
 # 5. OBSERVABILITY CHECK
 #    In the viewer, loading a second scene should not grow GPU memory

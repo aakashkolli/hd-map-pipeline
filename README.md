@@ -17,6 +17,19 @@ npm run dev -- --host 0.0.0.0
 
 Open `http://localhost:5173` for the viewer.
 
+Docker quickstart from the repository root:
+
+```bash
+docker compose up pipeline --build --abort-on-container-exit
+docker compose up -d viz --build
+```
+
+Open `http://localhost:5173/?benchmark=1` to render the configured 500K-point benchmark scene.
+
+## Screenshot
+
+![Three.js HD map viewer rendering a 500K-point benchmark cloud](docs/viewer_screenshot.png)
+
 ## Dataset Setup
 
 KITTI Raw: download only `2011_09_26_drive_0005`, `2011_09_26_drive_0009`, and `2011_09_26_calib` from `http://www.cvlibs.net/datasets/kitti/raw_data.php`.
@@ -50,12 +63,13 @@ flowchart LR
 ## Benchmarks
 
 See `docs/benchmarks.md`. Current voxel downsample benchmark: C++ pybind11 mean `32.98 ms` for 200,000 points into 20,000 occupied voxels.
+Current viewer benchmark: 500K points at `60.66 FPS` in GPU-backed Chrome using `scripts/measure_viewer_fps.mjs`.
 
 ## Docker
 
 ```bash
-docker compose -f docker/docker-compose.yml up pipeline
-docker compose -f docker/docker-compose.yml up viz
+docker compose up pipeline --build --abort-on-container-exit
+docker compose up -d viz --build
 ```
 
 ## Known Limitations
@@ -63,5 +77,4 @@ docker compose -f docker/docker-compose.yml up viz
 - RANSAC fits one plane per frame and can fail on banked roads, ramps, or overpasses.
 - BEV mask preparation rasterizes annotation vertices rather than thick lane polygons.
 - U-Net smoke evaluation is synthetic unless real KITTI and model weights are supplied.
-- Viewer performance still needs browser DevTools measurement on real 500K-point scenes.
-
+- The 500K viewer benchmark uses a synthetic world-frame point cloud; real KITTI scene performance should be remeasured after loading full survey data.

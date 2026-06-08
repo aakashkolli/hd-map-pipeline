@@ -10,6 +10,8 @@ def test_integration_files_exist_and_readme_is_standalone():
         "src/viz/index.html",
         "src/viz/vite.config.ts",
         "src/viz/tsconfig.json",
+        "scripts/measure_viewer_fps.mjs",
+        "docs/viewer_screenshot.png",
         "README.md",
         "docs/resume_bullets.md",
     ]
@@ -19,6 +21,8 @@ def test_integration_files_exist_and_readme_is_standalone():
     readme = Path("README.md").read_text(encoding="utf-8")
     assert "Quick Start" in readme
     assert "```mermaid" in readme
+    assert "docs/viewer_screenshot.png" in readme
+    assert "500K" in readme and "60.66 FPS" in readme
     assert "Dataset Setup" in readme
     assert "Known Limitations" in readme
     assert "PRD.md" not in readme and "CLAUDE.md" not in readme
