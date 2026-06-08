@@ -1,0 +1,39 @@
+pipeline:
+  n_frames_accumulate: 30       # frames per local map segment
+  world_frame: "enu"            # east-north-up world frame
+
+filters:
+  voxel_size: 0.05              # meters, 5 cm grid
+  outlier_radius: 0.30          # meters, neighbor search radius
+  outlier_min_neighbors: 5      # neighbors required to retain point
+  ransac:
+    max_iterations: 150         # candidate plane samples
+    distance_threshold: 0.15    # meters from plane to count as ground
+    min_inlier_ratio: 0.35      # diagnostic lower bound for road scenes
+    seed_z_percentile: 20       # lowest Z percentile for ground seeds
+    seed_xy_radius: 20.0        # meters from vehicle origin for seeds
+    random_seed: 42             # deterministic synthetic tests
+
+bev:
+  resolution: 0.05              # meters per pixel
+  extent: 50.0                  # meters from local origin
+
+extraction:
+  intensity_percentile: 85      # per-scan road marking threshold
+  dbscan_eps: 0.15              # meters, cluster radius
+  dbscan_min_samples: 10        # points required for a cluster core
+  polyline_rdp_epsilon: 0.05    # meters, simplification tolerance
+
+ml:
+  model_path: "data/models/bev_segmentation_v1.pt"
+  batch_size: 4
+  confidence_threshold: 0.60
+  device: "cpu"
+  num_classes: 4
+  input_size: 512
+
+qa:
+  match_iou_threshold: 0.40
+  positional_accuracy_percentiles: [50, 95]
+  max_gt_match_distance: 1.0    # meters
+
