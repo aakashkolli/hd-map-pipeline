@@ -14,6 +14,7 @@ type SidebarCallbacks = {
   onLayerToggle: (layer: LayerKey, enabled: boolean) => void;
   onColorMode: (mode: ColorMode) => void;
   onViewToggle: () => void;
+  onResetCamera: () => void;
   onRunPipeline: () => void;
 };
 
@@ -82,6 +83,10 @@ export class Sidebar {
           <span id="view-label">Perspective</span>
           <span class="sb-key">[V]</span>
         </button>
+        <button class="sb-view-btn" id="camera-reset" style="margin-top:4px">
+          <span>Reset camera</span>
+          <span class="sb-key">[R]</span>
+        </button>
       </div>
 
       <div class="sb-section" id="qa-section" style="display:none">
@@ -123,6 +128,10 @@ export class Sidebar {
 
     document.getElementById('view-toggle')!.addEventListener('click', () => {
       this.callbacks.onViewToggle();
+    });
+
+    document.getElementById('camera-reset')!.addEventListener('click', () => {
+      this.callbacks.onResetCamera();
     });
 
     this.viewLabelEl = document.getElementById('view-label')!;
@@ -266,6 +275,14 @@ export class Sidebar {
   clearSelection(): void {
     this.selectedEl.className = 'sb-muted';
     this.selectedEl.textContent = 'click a feature line';
+  }
+
+  setSceneMeta(points: number, features: number): void {
+    const el = document.getElementById('scene-meta');
+    if (!el) return;
+    const pStr = points >= 1000 ? `${(points / 1000).toFixed(0)}K pts` : `${points} pts`;
+    el.textContent = `KITTI 0005 · ${pStr} · ${features} features`;
+    el.hidden = false;
   }
 
   setPipelineStatus(status: 'idle' | 'running' | 'done' | 'error', message?: string): void {

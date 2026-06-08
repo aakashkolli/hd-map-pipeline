@@ -106,6 +106,9 @@ const sidebar = new Sidebar({
     const mode = cameraCtrl.toggleMode();
     sidebar.setViewMode(mode);
   },
+  onResetCamera() {
+    cameraCtrl.resetToLastRecenter();
+  },
   onRunPipeline() {
     sidebar.setPipelineStatus('running');
     triggerPipeline().then((initialStatus) => {
@@ -183,6 +186,8 @@ window.addEventListener('keydown', (event) => {
       sidebar.setViewMode(mode);
       break;
     }
+    case 'r':
+    case 'R': cameraCtrl.resetToLastRecenter(); break;
   }
 });
 
@@ -257,6 +262,10 @@ async function loadSceneData(): Promise<void> {
       pointCloudRenderer.load(cloud.positions, cloud.intensities);
       sidebar.updatePointCount(cloud.positions.length / 3);
       cameraCtrl.recenterOn(...cloud.centroid, cloud.extent);
+      sidebar.setSceneMeta(
+        cloud.positions.length / 3,
+        features ? features.features.length : 0,
+      );
     } else {
       const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.demoPointCount);
       currentPositions = positions;

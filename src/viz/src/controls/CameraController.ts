@@ -10,6 +10,8 @@ export class CameraController {
   private readonly perspControls: OrbitControls;
   private readonly orthoControls: OrbitControls;
   private mode: ViewMode = 'perspective';
+  private lastCentroid: [number, number, number] = [0, 0, 0];
+  private lastExtent = 50;
   private orthoScale: number;
 
   constructor(
@@ -119,6 +121,12 @@ export class CameraController {
     this.orthoCamera.position.set(cx, cy, this.orthoCamera.position.z);
     this.orthoControls.update();
     this.onResize();
+    this.lastCentroid = [cx, cy, cz];
+    this.lastExtent = extent;
+  }
+
+  resetToLastRecenter(): void {
+    this.recenterOn(...this.lastCentroid, this.lastExtent);
   }
 
   dispose(): void {

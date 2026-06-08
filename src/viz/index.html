@@ -392,6 +392,21 @@
         color: #8b949e;
         font-family: ui-monospace, 'SFMono-Regular', monospace;
       }
+
+      /* ─── Scene metadata chip ───────────────────────────────── */
+      .scene-meta-chip {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        font-family: ui-monospace, 'SFMono-Regular', monospace;
+        font-size: 10px;
+        color: #8b949e;
+        pointer-events: none;
+        background: #0d111799;
+        padding: 3px 7px;
+        border-radius: 3px;
+        border: 1px solid #21262d;
+      }
     </style>
   </head>
   <body>
@@ -402,6 +417,7 @@
         <div class="lo-spinner"></div>
         <span class="lo-label">loading scene…</span>
       </div>
+      <div id="scene-meta" hidden class="scene-meta-chip"></div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
