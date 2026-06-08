@@ -1,0 +1,24 @@
+services:
+  pipeline:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.pipeline
+    volumes:
+      - ./data:/app/data
+      - ./configs:/app/configs
+    command: >
+      python scripts/run_pipeline.py
+      --config configs/default.yaml
+      --stage full
+      --output data/outputs
+
+  viz:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.viz
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./data/outputs:/app/public/data
+    command: npm run dev -- --host 0.0.0.0
+
