@@ -299,6 +299,51 @@
         display: none;
       }
 
+      /* ─── Pipeline run button ──────────────────────────────── */
+      .sb-run-btn {
+        width: 100%;
+        padding: 7px 0;
+        background: #238636;
+        border: 1px solid #2ea043;
+        color: #ffffff;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background 0.1s, border-color 0.1s, opacity 0.1s;
+        letter-spacing: 0.02em;
+      }
+
+      .sb-run-btn:hover:not(:disabled) { background: #2ea043; }
+
+      .sb-run-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .sb-run-btn.running {
+        background: #21262d;
+        border-color: #58a6ff;
+        color: #58a6ff;
+      }
+
+      .sb-run-btn.error {
+        background: #21262d;
+        border-color: #f85149;
+        color: #f85149;
+      }
+
+      .sb-pipeline-status {
+        margin-top: 5px;
+        font-size: 10px;
+        min-height: 14px;
+      }
+
+      .sb-pipeline-status.muted { color: #8b949e; }
+      .sb-pipeline-status.done  { color: #3fb950; }
+      .sb-pipeline-status.err   { color: #f85149; }
+
       /* ─── Selection highlight ring ──────────────────────────── */
       .selected-feature-highlight { /* applied via material linewidth */ }
     </style>

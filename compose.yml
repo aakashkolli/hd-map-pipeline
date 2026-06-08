@@ -12,6 +12,19 @@ services:
       --stage full
       --output data/outputs
 
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./configs:/app/configs
+      - ./scripts:/app/scripts
+      - ./src:/app/src
+    command: python src/api/server.py
+
   viz:
     build:
       context: .
@@ -20,5 +33,8 @@ services:
       - "5173:5173"
     volumes:
       - ./data/outputs:/app/public/data
+    environment:
+      - VITE_API_TARGET=http://api:8000
+    depends_on:
+      - api
     command: npm run dev -- --host 0.0.0.0
-

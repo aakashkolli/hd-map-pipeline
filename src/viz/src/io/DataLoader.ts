@@ -75,6 +75,47 @@ export async function loadQAReport(url: string): Promise<QAReport | null> {
   }
 }
 
+export type PipelineStatus = 'idle' | 'running' | 'done' | 'error';
+
+/** Start a pipeline run on the backend. Returns the current status. */
+export async function triggerPipeline(): Promise<PipelineStatus> {
+  try {
+    const res = await fetch('/api/run-pipeline', { method: 'POST' });
+    if (!res.ok) return 'error';
+    const body = await res.json() as { status: PipelineStatus };
+    return body.status;
+  } catch {
+    return 'error';
+  }
+}
+
+/**
+ * Poll /api/status every intervalMs until the status is 'done' or 'error'.
+ * Calls onDone or onError once, then stops.
+ */
+export function pollPipelineStatus(
+  onDone: () => void,
+  onError: (msg: string) => void,
+  intervalMs = 1500,
+): () => void {
+  let stopped = false;
+  const tick = async () => {
+    if (stopped) return;
+    try {
+      const res = await fetch('/api/status');
+      if (!res.ok) { onError('API unreachable'); stopped = true; return; }
+      const body = await res.json() as { status: PipelineStatus; error?: string | null };
+      if (body.status === 'done') { stopped = true; onDone(); return; }
+      if (body.status === 'error') { stopped = true; onError(body.error ?? 'unknown error'); return; }
+    } catch {
+      onError('API unreachable'); stopped = true; return;
+    }
+    setTimeout(tick, intervalMs);
+  };
+  setTimeout(tick, intervalMs);
+  return () => { stopped = true; };
+}
+
 export function buildQAAnnotations(
   report: QAReport,
   features: GeoJSONFeatureCollection | null,

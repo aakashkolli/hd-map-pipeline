@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -k -n api,vite -c blue,cyan \"python3 ../../src/api/server.py\" \"vite\"",
+    "dev:viz": "vite",
     "build": "tsc && vite build"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
   },
   "devDependencies": {
     "@types/three": "^0.182.0",
+    "concurrently": "^9.2.1",
     "typescript": "^5.9.0"
   }
 }

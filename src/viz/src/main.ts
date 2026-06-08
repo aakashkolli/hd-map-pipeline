@@ -4,7 +4,7 @@ import { FeatureRenderer } from './renderer/FeatureRenderer.js';
 import { QAAnnotationRenderer } from './renderer/QAAnnotationRenderer.js';
 import { CameraController } from './controls/CameraController.js';
 import { Sidebar } from './controls/Sidebar.js';
-import { loadFeatures, loadQAReport, loadPointCloudBin, buildQAAnnotations } from './io/DataLoader.js';
+import { loadFeatures, loadQAReport, loadPointCloudBin, buildQAAnnotations, triggerPipeline, pollPipelineStatus } from './io/DataLoader.js';
 import rawConfig from '../../../configs/viz.json';
 
 /* ─── Config ─────────────────────────────────────────────────── */
@@ -105,6 +105,24 @@ const sidebar = new Sidebar({
   onViewToggle() {
     const mode = cameraCtrl.toggleMode();
     sidebar.setViewMode(mode);
+  },
+  onRunPipeline() {
+    sidebar.setPipelineStatus('running');
+    triggerPipeline().then((initialStatus) => {
+      if (initialStatus === 'error') {
+        sidebar.setPipelineStatus('error', 'could not reach API server');
+        return;
+      }
+      pollPipelineStatus(
+        async () => {
+          await loadSceneData();
+          sidebar.setPipelineStatus('done');
+        },
+        (msg) => {
+          sidebar.setPipelineStatus('error', msg);
+        },
+      );
+    });
   },
 });
 

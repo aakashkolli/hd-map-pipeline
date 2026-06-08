@@ -14,6 +14,7 @@ type SidebarCallbacks = {
   onLayerToggle: (layer: LayerKey, enabled: boolean) => void;
   onColorMode: (mode: ColorMode) => void;
   onViewToggle: () => void;
+  onRunPipeline: () => void;
 };
 
 const LAYER_CONFIG: Array<{ key: LayerKey; label: string; color: string; shortcut: string }> = [
@@ -34,6 +35,8 @@ export class Sidebar {
   private layerToggles: Record<LayerKey, HTMLElement> = {} as Record<LayerKey, HTMLElement>;
   private colorBtns: Record<ColorMode, HTMLElement> = {} as Record<ColorMode, HTMLElement>;
   private pointCountEl!: HTMLElement;
+  private pipelineBtnEl!: HTMLButtonElement;
+  private pipelineStatusEl!: HTMLElement;
 
   constructor(private readonly callbacks: SidebarCallbacks) {
     this.buildDOM();
@@ -44,6 +47,12 @@ export class Sidebar {
     sidebar.innerHTML = `
       <div class="sb-header">
         <span class="sb-title">HD Map Viewer</span>
+      </div>
+
+      <div class="sb-section">
+        <div class="sb-section-label">Pipeline</div>
+        <button class="sb-run-btn" id="run-pipeline-btn">Run Pipeline</button>
+        <div id="pipeline-status" class="sb-pipeline-status"></div>
       </div>
 
       <div class="sb-section">
@@ -122,6 +131,12 @@ export class Sidebar {
     this.qaSectionEl = document.getElementById('qa-section')!;
     this.qaMetricsEl = document.getElementById('qa-metrics')!;
     this.pointCountEl = document.getElementById('point-count')!;
+    this.pipelineBtnEl = document.getElementById('run-pipeline-btn') as HTMLButtonElement;
+    this.pipelineStatusEl = document.getElementById('pipeline-status')!;
+
+    this.pipelineBtnEl.addEventListener('click', () => {
+      this.callbacks.onRunPipeline();
+    });
   }
 
   setLayer(key: LayerKey, enabled: boolean): void {
@@ -251,6 +266,40 @@ export class Sidebar {
   clearSelection(): void {
     this.selectedEl.className = 'sb-muted';
     this.selectedEl.textContent = 'click a feature line';
+  }
+
+  setPipelineStatus(status: 'idle' | 'running' | 'done' | 'error', message?: string): void {
+    const btn = this.pipelineBtnEl;
+    const statusEl = this.pipelineStatusEl;
+
+    btn.className = 'sb-run-btn';
+    btn.disabled = false;
+    statusEl.textContent = '';
+    statusEl.className = 'sb-pipeline-status';
+
+    switch (status) {
+      case 'idle':
+        btn.textContent = 'Run Pipeline';
+        break;
+      case 'running':
+        btn.textContent = 'Running…';
+        btn.disabled = true;
+        btn.classList.add('running');
+        statusEl.textContent = 'processing point cloud';
+        statusEl.classList.add('muted');
+        break;
+      case 'done':
+        btn.textContent = 'Run Pipeline';
+        statusEl.textContent = 'loaded ✓';
+        statusEl.classList.add('done');
+        break;
+      case 'error':
+        btn.textContent = 'Retry';
+        btn.classList.add('error');
+        statusEl.textContent = message ?? 'pipeline failed';
+        statusEl.classList.add('err');
+        break;
+    }
   }
 
   get currentColorMode(): ColorMode {

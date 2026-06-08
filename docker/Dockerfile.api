@@ -1,0 +1,12 @@
+FROM python:3.14-slim
+
+WORKDIR /app
+
+COPY requirements-pipeline.txt requirements-api.txt ./
+RUN pip install --no-cache-dir -r requirements-pipeline.txt -r requirements-api.txt
+
+COPY configs configs
+COPY scripts scripts
+COPY src src
+
+CMD ["python", "src/api/server.py"]
