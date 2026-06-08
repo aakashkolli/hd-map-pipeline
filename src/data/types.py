@@ -19,6 +19,5 @@ class LaneBoundaryFeature:
     geometry: list[list[float]]
     feature_type: LaneType
     confidence: float
-    point_count: int
+    point_count: int = 0
     source: str = "geometric"
-
