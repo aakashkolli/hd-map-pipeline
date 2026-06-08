@@ -344,13 +344,28 @@
       .sb-pipeline-status.done  { color: #3fb950; }
       .sb-pipeline-status.err   { color: #f85149; }
 
+      /* ─── Scene reload flash ───────────────────────────────── */
+      #scene-flash {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0;
+        background: #58a6ff22;
+        border: 1px solid #58a6ff44;
+        transition: opacity 0.08s ease-in;
+        z-index: 10;
+      }
+      #scene-flash.active { opacity: 1; }
+
       /* ─── Selection highlight ring ──────────────────────────── */
       .selected-feature-highlight { /* applied via material linewidth */ }
     </style>
   </head>
   <body>
     <div id="sidebar"></div>
-    <div id="canvas-container"></div>
+    <div id="canvas-container">
+      <div id="scene-flash"></div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

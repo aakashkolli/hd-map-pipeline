@@ -1,7 +1,7 @@
 {
   "viewer": {
     "backgroundColorHex": "#0d1117",
-    "pointSizeMeters": 0.04,
+    "pointSizeMeters": 0.3,
     "cameraFovDegrees": 60,
     "nearClipMeters": 0.1,
     "farClipMeters": 1000,

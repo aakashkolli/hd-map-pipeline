@@ -32,24 +32,23 @@ export async function loadPointCloudBin(url: string): Promise<PointCloudData | n
     const positions = new Float32Array(buf, 4, n * 3);
     const intensities = new Float32Array(buf, 4 + n * 12, n);
 
-    // Compute centroid and bounding sphere extent.
-    let sumX = 0, sumY = 0, sumZ = 0;
+    // Bounding box center — more stable than mean centroid when background
+    // points cluster near the origin and distort the weighted average.
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+    let minZ = Infinity, maxZ = -Infinity;
     for (let i = 0; i < n; i++) {
-      sumX += positions[i * 3];
-      sumY += positions[i * 3 + 1];
-      sumZ += positions[i * 3 + 2];
+      const x = positions[i * 3], y = positions[i * 3 + 1], z = positions[i * 3 + 2];
+      if (x < minX) minX = x; if (x > maxX) maxX = x;
+      if (y < minY) minY = y; if (y > maxY) maxY = y;
+      if (z < minZ) minZ = z; if (z > maxZ) maxZ = z;
     }
-    const cx = sumX / n, cy = sumY / n, cz = sumZ / n;
+    const cx = (minX + maxX) / 2;
+    const cy = (minY + maxY) / 2;
+    const cz = (minZ + maxZ) / 2;
+    const extent = Math.max((maxX - minX) / 2, (maxY - minY) / 2, 1);
 
-    let maxDist = 1;
-    for (let i = 0; i < n; i++) {
-      const dx = positions[i * 3] - cx;
-      const dy = positions[i * 3 + 1] - cy;
-      const d = Math.sqrt(dx * dx + dy * dy);
-      if (d > maxDist) maxDist = d;
-    }
-
-    return { positions, intensities, centroid: [cx, cy, cz], extent: maxDist };
+    return { positions, intensities, centroid: [cx, cy, cz], extent };
   } catch {
     return null;
   }

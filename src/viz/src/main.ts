@@ -116,13 +116,14 @@ const sidebar = new Sidebar({
       pollPipelineStatus(
         async () => {
           await loadSceneData();
+          flashScene();
           sidebar.setPipelineStatus('done');
         },
         (msg) => {
           sidebar.setPipelineStatus('error', msg);
         },
       );
-    });
+    }).catch(() => sidebar.setPipelineStatus('error', 'unexpected error'));
   },
 });
 
@@ -277,6 +278,12 @@ async function loadSceneData(): Promise<void> {
   } else {
     qaRenderer.load([]);
   }
+}
+
+function flashScene(): void {
+  const el = document.getElementById('scene-flash')!;
+  el.classList.add('active');
+  setTimeout(() => el.classList.remove('active'), 120);
 }
 
 loadSceneData();
