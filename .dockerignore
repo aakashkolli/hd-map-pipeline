@@ -1,0 +1,14 @@
+.git
+.venv
+.pytest_cache
+build
+__pycache__
+*.pyc
+*.so
+data/raw
+data/processed
+node_modules
+src/viz/dist
+CLAUDE.md
+PRD.md
+

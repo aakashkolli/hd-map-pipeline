@@ -1,0 +1,13 @@
+{
+  "scene_id": "synthetic_full_smoke",
+  "completeness": 1.0,
+  "positional_accuracy_p50": 0.0,
+  "positional_accuracy_p95": 0.0,
+  "false_positive_rate": 0.0,
+  "classification_accuracy": 1.0,
+  "per_class_completeness": {
+    "lane_line": 1.0
+  },
+  "missed_gt_features": [],
+  "false_positive_ids": []
+}

@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 1.0,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.0,
+            -1.5,
+            0.0
+          ],
+          [
+            50.0,
+            -1.5,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 1.0,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.0,
+            1.5,
+            0.0
+          ],
+          [
+            50.0,
+            1.5,
+            0.0
+          ]
+        ]
+      }
+    }
+  ]
+}
