@@ -223,60 +223,71 @@ function generateSyntheticPointCloud(
 
 const benchmarkEnabled = new URLSearchParams(window.location.search).has('benchmark');
 
+function setLoadingVisible(visible: boolean): void {
+  const el = document.getElementById('loading-overlay')!;
+  el.hidden = !visible;
+}
+
 async function loadSceneData(): Promise<void> {
-  // Benchmark mode: always use the full synthetic cloud, skip data/ fetch.
-  if (benchmarkEnabled) {
-    const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.syntheticPointCount);
-    currentPositions = positions;
-    currentIntensities = intensities;
-    pointCloudRenderer.load(positions, intensities);
-    sidebar.updatePointCount(viewerConfig.syntheticPointCount);
-    featureRenderer.load({ type: 'FeatureCollection', features: [] });
-    qaRenderer.load([]);
-    return;
-  }
+  setLoadingVisible(true);
+  try {
+    // Benchmark mode: always use the full synthetic cloud, skip data/ fetch.
+    if (benchmarkEnabled) {
+      const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.syntheticPointCount);
+      currentPositions = positions;
+      currentIntensities = intensities;
+      pointCloudRenderer.load(positions, intensities);
+      sidebar.updatePointCount(viewerConfig.syntheticPointCount);
+      featureRenderer.load({ type: 'FeatureCollection', features: [] });
+      qaRenderer.load([]);
+      return;
+    }
 
-  // Parallel-load everything the pipeline writes to data/outputs/.
-  const [cloud, features, report] = await Promise.all([
-    loadPointCloudBin('/data/points.bin'),
-    loadFeatures('/data/features.geojson'),
-    loadQAReport('/data/qa_report.json'),
-  ]);
+    // Parallel-load everything the pipeline writes to data/outputs/.
+    const [cloud, features, report] = await Promise.all([
+      loadPointCloudBin('/data/points.bin'),
+      loadFeatures('/data/features.geojson'),
+      loadQAReport('/data/qa_report.json'),
+    ]);
 
-  // Point cloud — use pipeline output or fall back to small synthetic demo.
-  if (cloud) {
-    currentPositions = cloud.positions;
-    currentIntensities = cloud.intensities;
-    pointCloudRenderer.load(cloud.positions, cloud.intensities);
-    sidebar.updatePointCount(cloud.positions.length / 3);
-    cameraCtrl.recenterOn(...cloud.centroid, cloud.extent);
-  } else {
-    const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.demoPointCount);
-    currentPositions = positions;
-    currentIntensities = intensities;
-    pointCloudRenderer.load(positions, intensities);
-    sidebar.updatePointCount(viewerConfig.demoPointCount);
-  }
+    // Point cloud — use pipeline output or fall back to small synthetic demo.
+    if (cloud) {
+      currentPositions = cloud.positions;
+      currentIntensities = cloud.intensities;
+      pointCloudRenderer.load(cloud.positions, cloud.intensities);
+      sidebar.updatePointCount(cloud.positions.length / 3);
+      cameraCtrl.recenterOn(...cloud.centroid, cloud.extent);
+    } else {
+      const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.demoPointCount);
+      currentPositions = positions;
+      currentIntensities = intensities;
+      pointCloudRenderer.load(positions, intensities);
+      sidebar.updatePointCount(viewerConfig.demoPointCount);
+    }
 
-  // Feature lines — use pipeline output or fall back to demo line.
-  featureRenderer.load(
-    features ?? {
-      type: 'FeatureCollection',
-      features: [
-        {
-          geometry: { type: 'LineString', coordinates: viewerConfig.demoFeatureLineWorld },
-          properties: { feature_type: 'lane_line' },
-        },
-      ],
-    },
-  );
+    // Feature lines — use pipeline output or fall back to demo line.
+    featureRenderer.load(
+      features ?? {
+        type: 'FeatureCollection',
+        features: [
+          {
+            geometry: { type: 'LineString', coordinates: viewerConfig.demoFeatureLineWorld },
+            properties: { feature_type: 'lane_line' },
+          },
+        ],
+      },
+    );
 
-  // QA report.
-  if (report) {
-    sidebar.showQAReport(report);
-    qaRenderer.load(buildQAAnnotations(report, features));
-  } else {
-    qaRenderer.load([]);
+    // QA report.
+    if (report) {
+      sidebar.showQAReport(report);
+      qaRenderer.load(buildQAAnnotations(report, features));
+    } else {
+      qaRenderer.load([]);
+    }
+
+  } finally {
+    setLoadingVisible(false);
   }
 }
 
