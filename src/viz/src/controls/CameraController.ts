@@ -98,6 +98,29 @@ export class CameraController {
     this.orthoCamera.updateProjectionMatrix();
   }
 
+  /**
+   * Reposition both cameras to frame a newly loaded dataset.
+   *
+   * @param cx - centroid X in world ENU
+   * @param cy - centroid Y in world ENU
+   * @param cz - centroid Z in world ENU
+   * @param extent - bounding sphere radius in meters
+   */
+  recenterOn(cx: number, cy: number, cz: number, extent: number): void {
+    const pullback = Math.max(extent * 1.5, 10);
+
+    this.perspControls.target.set(cx, cy, cz);
+    this.perspCamera.position.set(cx, cy - pullback, cz + pullback * 0.6);
+    this.perspCamera.lookAt(cx, cy, cz);
+    this.perspControls.update();
+
+    this.orthoScale = extent * 1.2;
+    this.orthoControls.target.set(cx, cy, cz);
+    this.orthoCamera.position.set(cx, cy, this.orthoCamera.position.z);
+    this.orthoControls.update();
+    this.onResize();
+  }
+
   dispose(): void {
     this.perspControls.dispose();
     this.orthoControls.dispose();

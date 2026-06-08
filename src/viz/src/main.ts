@@ -4,7 +4,7 @@ import { FeatureRenderer } from './renderer/FeatureRenderer.js';
 import { QAAnnotationRenderer } from './renderer/QAAnnotationRenderer.js';
 import { CameraController } from './controls/CameraController.js';
 import { Sidebar } from './controls/Sidebar.js';
-import { loadFeatures, loadQAReport, buildQAAnnotations } from './io/DataLoader.js';
+import { loadFeatures, loadQAReport, loadPointCloudBin, buildQAAnnotations } from './io/DataLoader.js';
 import rawConfig from '../../../configs/viz.json';
 
 /* ─── Config ─────────────────────────────────────────────────── */
@@ -174,26 +174,16 @@ window.addEventListener('resize', () => {
   cameraCtrl.onResize();
 });
 
-/* ─── Point cloud generation ─────────────────────────────────── */
-
-const benchmarkEnabled = new URLSearchParams(window.location.search).has('benchmark');
-const pointCount = benchmarkEnabled ? viewerConfig.syntheticPointCount : viewerConfig.demoPointCount;
-const { positions, intensities } = generateSyntheticPointCloud(pointCount, cfg);
-currentPositions = positions;
-currentIntensities = intensities;
-
-pointCloudRenderer.load(positions, intensities);
-sidebar.updatePointCount(pointCount);
+/* ─── Synthetic fallback (benchmark + no-data mode) ─────────── */
 
 function generateSyntheticPointCloud(
   count: number,
-  config: ViewerConfig,
 ): { positions: Float32Array; intensities: Float32Array } {
   const positions = new Float32Array(count * 3);
   const intensities = new Float32Array(count);
   const gridWidth = Math.ceil(Math.sqrt(count));
-  const extent = config.syntheticExtentMeters;
-  const heightScale = config.syntheticHeightMeters;
+  const extent = viewerConfig.syntheticExtentMeters;
+  const heightScale = viewerConfig.syntheticHeightMeters;
 
   for (let i = 0; i < count; i++) {
     const xi = i % gridWidth;
@@ -201,40 +191,71 @@ function generateSyntheticPointCloud(
     const xn = xi / gridWidth;
     const yn = yi / gridWidth;
     const off = i * 3;
-    positions[off]     = (xn - config.syntheticCenterOffset) * extent;
-    positions[off + 1] = (yn - config.syntheticCenterOffset) * extent;
+    positions[off]     = (xn - viewerConfig.syntheticCenterOffset) * extent;
+    positions[off + 1] = (yn - viewerConfig.syntheticCenterOffset) * extent;
     positions[off + 2] = Math.sin(xn * Math.PI) * Math.cos(yn * Math.PI) * heightScale;
-    intensities[i] = (xn + yn) / config.intensityAverageDivisor;
+    intensities[i] = (xn + yn) / viewerConfig.intensityAverageDivisor;
   }
 
   return { positions, intensities };
 }
 
-/* ─── Async data loading ─────────────────────────────────────── */
+/* ─── Scene loading ──────────────────────────────────────────── */
+
+const benchmarkEnabled = new URLSearchParams(window.location.search).has('benchmark');
 
 async function loadSceneData(): Promise<void> {
-  const [features, report] = await Promise.all([
+  // Benchmark mode: always use the full synthetic cloud, skip data/ fetch.
+  if (benchmarkEnabled) {
+    const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.syntheticPointCount);
+    currentPositions = positions;
+    currentIntensities = intensities;
+    pointCloudRenderer.load(positions, intensities);
+    sidebar.updatePointCount(viewerConfig.syntheticPointCount);
+    featureRenderer.load({ type: 'FeatureCollection', features: [] });
+    qaRenderer.load([]);
+    return;
+  }
+
+  // Parallel-load everything the pipeline writes to data/outputs/.
+  const [cloud, features, report] = await Promise.all([
+    loadPointCloudBin('/data/points.bin'),
     loadFeatures('/data/features.geojson'),
     loadQAReport('/data/qa_report.json'),
   ]);
 
-  // Features
-  const featureCollection = features ?? {
-    type: 'FeatureCollection' as const,
-    features: [
-      {
-        geometry: { type: 'LineString' as const, coordinates: viewerConfig.demoFeatureLineWorld },
-        properties: { feature_type: 'lane_line' },
-      },
-    ],
-  };
-  featureRenderer.load(featureCollection);
+  // Point cloud — use pipeline output or fall back to small synthetic demo.
+  if (cloud) {
+    currentPositions = cloud.positions;
+    currentIntensities = cloud.intensities;
+    pointCloudRenderer.load(cloud.positions, cloud.intensities);
+    sidebar.updatePointCount(cloud.positions.length / 3);
+    cameraCtrl.recenterOn(...cloud.centroid, cloud.extent);
+  } else {
+    const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.demoPointCount);
+    currentPositions = positions;
+    currentIntensities = intensities;
+    pointCloudRenderer.load(positions, intensities);
+    sidebar.updatePointCount(viewerConfig.demoPointCount);
+  }
 
-  // QA report
+  // Feature lines — use pipeline output or fall back to demo line.
+  featureRenderer.load(
+    features ?? {
+      type: 'FeatureCollection',
+      features: [
+        {
+          geometry: { type: 'LineString', coordinates: viewerConfig.demoFeatureLineWorld },
+          properties: { feature_type: 'lane_line' },
+        },
+      ],
+    },
+  );
+
+  // QA report.
   if (report) {
     sidebar.showQAReport(report);
-    const annotations = buildQAAnnotations(report, features);
-    qaRenderer.load(annotations);
+    qaRenderer.load(buildQAAnnotations(report, features));
   } else {
     qaRenderer.load([]);
   }
@@ -250,7 +271,7 @@ if (benchmarkEnabled) metricsEl.style.display = 'block';
 const startTimeMs = performance.now();
 window.__HD_MAP_VIEWER_METRICS__ = {
   benchmarkEnabled,
-  pointCount,
+  pointCount: benchmarkEnabled ? viewerConfig.syntheticPointCount : viewerConfig.demoPointCount,
   benchmarkFrameCount: viewerConfig.benchmarkFrameCount,
   framesRendered: 0,
   averageFps: 0,

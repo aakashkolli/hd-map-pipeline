@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import struct
 import sys
 from dataclasses import asdict
 from pathlib import Path
@@ -114,12 +115,32 @@ def _run_full_smoke(config: dict[str, Any], output: Path) -> None:
         scene_id="synthetic_full_smoke",
     )
     _write_geojson(output / "features.geojson", features)
+    _write_points_bin(output / "points.bin", points)
     (output / "qa_report.json").write_text(
         json.dumps(asdict(report), indent=2),
         encoding="utf-8",
     )
     print(f"Wrote {output / 'features.geojson'}")
+    print(f"Wrote {output / 'points.bin'}")
     print(f"Wrote {output / 'qa_report.json'}")
+
+
+def _write_points_bin(path: Path, points: np.ndarray) -> None:
+    """Write xyz+intensity point cloud as a packed binary blob.
+
+    Format (little-endian):
+        bytes 0-3       uint32  N (point count)
+        bytes 4..4+N*12 float32 xyz triples (N*3 values). FRAME: world ENU.
+        bytes 4+N*12..  float32 intensities (N values, range [0, 1]).
+    """
+    arr = np.asarray(points, dtype=np.float32)
+    n = len(arr)
+    xyz = np.ascontiguousarray(arr[:, :3])
+    intensity = np.ascontiguousarray(arr[:, 3])
+    with path.open("wb") as fh:
+        fh.write(struct.pack("<I", n))
+        fh.write(xyz.tobytes())
+        fh.write(intensity.tobytes())
 
 
 def _synthetic_lane_points() -> np.ndarray:
