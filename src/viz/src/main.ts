@@ -42,13 +42,13 @@ declare global {
   }
 }
 
-const cfg = rawConfig.viewer as ViewerConfig;
+const viewerConfig = rawConfig.viewer as ViewerConfig;
 const SIDEBAR_WIDTH = 240;
 
 /* ─── Scene ──────────────────────────────────────────────────── */
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(cfg.backgroundColorHex);
+scene.background = new THREE.Color(viewerConfig.backgroundColorHex);
 
 /* ─── Renderer ───────────────────────────────────────────────── */
 
@@ -56,7 +56,7 @@ const container = document.getElementById('canvas-container')!;
 const canvasW = () => window.innerWidth - SIDEBAR_WIDTH;
 const canvasH = () => window.innerHeight;
 
-const renderer = new THREE.WebGLRenderer({ antialias: cfg.antialias });
+const renderer = new THREE.WebGLRenderer({ antialias: viewerConfig.antialias });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(canvasW(), canvasH());
 container.appendChild(renderer.domElement);
@@ -65,17 +65,17 @@ container.appendChild(renderer.domElement);
 
 const cameraCtrl = new CameraController(
   renderer,
-  cfg.syntheticExtentMeters / 2,
-  cfg.cameraPositionWorld,
-  cfg.cameraLookAtWorld,
-  cfg.cameraFovDegrees,
-  cfg.nearClipMeters,
-  cfg.farClipMeters,
+  viewerConfig.syntheticExtentMeters / 2,
+  viewerConfig.cameraPositionWorld,
+  viewerConfig.cameraLookAtWorld,
+  viewerConfig.cameraFovDegrees,
+  viewerConfig.nearClipMeters,
+  viewerConfig.farClipMeters,
 );
 
 /* ─── Feature/QA renderers ───────────────────────────────────── */
 
-const pointCloudRenderer = new PointCloudRenderer(scene, cfg.pointSizeMeters);
+const pointCloudRenderer = new PointCloudRenderer(scene, viewerConfig.pointSizeMeters);
 const featureRenderer = new FeatureRenderer(scene);
 const qaRenderer = new QAAnnotationRenderer(scene, (annotation) => {
   sidebar.showSelectedAnnotation(annotation);
@@ -177,7 +177,7 @@ window.addEventListener('resize', () => {
 /* ─── Point cloud generation ─────────────────────────────────── */
 
 const benchmarkEnabled = new URLSearchParams(window.location.search).has('benchmark');
-const pointCount = benchmarkEnabled ? cfg.syntheticPointCount : cfg.demoPointCount;
+const pointCount = benchmarkEnabled ? viewerConfig.syntheticPointCount : viewerConfig.demoPointCount;
 const { positions, intensities } = generateSyntheticPointCloud(pointCount, cfg);
 currentPositions = positions;
 currentIntensities = intensities;
@@ -223,7 +223,7 @@ async function loadSceneData(): Promise<void> {
     type: 'FeatureCollection' as const,
     features: [
       {
-        geometry: { type: 'LineString' as const, coordinates: cfg.demoFeatureLineWorld },
+        geometry: { type: 'LineString' as const, coordinates: viewerConfig.demoFeatureLineWorld },
         properties: { feature_type: 'lane_line' },
       },
     ],
@@ -251,7 +251,7 @@ const startTimeMs = performance.now();
 window.__HD_MAP_VIEWER_METRICS__ = {
   benchmarkEnabled,
   pointCount,
-  benchmarkFrameCount: cfg.benchmarkFrameCount,
+  benchmarkFrameCount: viewerConfig.benchmarkFrameCount,
   framesRendered: 0,
   averageFps: 0,
 };
