@@ -19,8 +19,9 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from src.data.types import LaneBoundaryFeature, LaneType
+from src.data.kitti import load_lidar_frame, parse_calibration, parse_oxts_pose
 from src.pipeline.extract import ExtractionConfig, extract_lane_boundaries
-from src.pipeline.ingest import accumulate_kitti_frames
+from src.pipeline.ingest import accumulate_kitti_frames, _origin_from_oxts
 from src.pipeline.qa import QAConfig, compute_qa_metrics
 import pandas as pd
 
@@ -163,7 +164,7 @@ def _run_full_kitti(config: dict[str, Any], output: Path) -> None:
     print(f"[done]   wrote {output / 'points.bin'} ({len(points_4):,} pts), "
           f"{output / 'features.geojson'} ({len(features)} features)")
 
-    _generate_realistic_frames(output, n_frames)
+    _generate_kitti_frames(config, output)
 
 
 def _run_full_smoke(config: dict[str, Any], output: Path) -> None:
@@ -201,6 +202,62 @@ def _run_full_smoke(config: dict[str, Any], output: Path) -> None:
     print(f"Wrote {output / 'qa_report.json'}")
 
     _generate_realistic_frames(output)
+
+
+def _generate_kitti_frames(config: dict[str, Any], output: Path) -> None:
+    """Write per-frame viewer binaries from real KITTI Velodyne data.
+
+    Transforms each raw frame from LiDAR frame → vehicle frame → world ENU,
+    then splits into ground (z < 0.5 m) and obstacle layers.
+
+    Output (world ENU, x=east, y=north, z=up):
+        frames/frame_{N}_raw.bin       – all returns for frame N
+        frames/frame_{N}_ground.bin    – returns with z < 0.5 m
+        frames/frame_{N}_obstacles.bin – returns with z >= 0.5 m
+    """
+    dataset = config.get("dataset", {})
+    repo_root = Path(__file__).resolve().parents[1]
+
+    scene_path = Path(dataset["scene"])
+    calib_path = Path(dataset["calib"])
+    if not scene_path.is_absolute():
+        scene_path = repo_root / scene_path
+    if not calib_path.is_absolute():
+        calib_path = repo_root / calib_path
+
+    n_frames = int(config["pipeline"]["n_frames_accumulate"])
+    lidar_files = sorted((scene_path / "velodyne_points" / "data").glob("*.bin"))[:n_frames]
+    oxts_files = sorted((scene_path / "oxts" / "data").glob("*.txt"))[:n_frames]
+
+    t_vehicle_lidar = parse_calibration(calib_path)["T_vehicle_lidar"]
+    origin = _origin_from_oxts(oxts_files[0])
+
+    frames_dir = output / "frames"
+    frames_dir.mkdir(parents=True, exist_ok=True)
+
+    for frame_idx, (lidar_path, oxts_path) in enumerate(zip(lidar_files, oxts_files)):
+        lidar_pts = load_lidar_frame(lidar_path)            # (N,4) LiDAR frame
+        vehicle_xyz = t_vehicle_lidar.transform_points(lidar_pts[:, :3])
+        t_world_vehicle = parse_oxts_pose(oxts_path, origin=origin)
+        world_xyz = t_world_vehicle.transform_points(vehicle_xyz).astype(np.float32)
+
+        # Per-scan intensity normalisation: map sensor raw values → [0, 1]
+        intensities = lidar_pts[:, 3].astype(np.float32)
+        max_i = intensities.max()
+        if max_i > 0:
+            intensities = intensities / max_i
+
+        raw = np.column_stack([world_xyz, intensities])
+
+        # Ground split: z < 0.5 m captures road surface, curbs, low markings (~88%)
+        gnd_mask = raw[:, 2] < 0.5
+        _write_points_bin(frames_dir / f"frame_{frame_idx}_raw.bin", raw)
+        _write_points_bin(frames_dir / f"frame_{frame_idx}_ground.bin", raw[gnd_mask])
+        _write_points_bin(frames_dir / f"frame_{frame_idx}_obstacles.bin", raw[~gnd_mask])
+        print(
+            f"[kitti frames] frame {frame_idx}: {len(raw):,} pts "
+            f"({gnd_mask.sum():,} ground, {(~gnd_mask).sum():,} obstacles)"
+        )
 
 
 def _generate_realistic_frames(output: Path, n_frames: int = 5) -> None:
