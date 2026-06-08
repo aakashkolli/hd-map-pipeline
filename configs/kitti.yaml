@@ -1,0 +1,6 @@
+base: "configs/default.yaml"
+
+dataset:
+  scene: "data/raw/kitti/2011_09_26_drive_0005_sync"
+  calib: "data/raw/kitti/2011_09_26_calib"
+
