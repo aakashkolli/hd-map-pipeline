@@ -22,6 +22,10 @@ from src.data.types import LaneBoundaryFeature, LaneType
 from src.pipeline.extract import ExtractionConfig, extract_lane_boundaries
 from src.pipeline.ingest import accumulate_kitti_frames
 from src.pipeline.qa import QAConfig, compute_qa_metrics
+import pandas as pd
+
+from src.filters.ground_plane import ransac_ground_plane, RansacConfig
+from src.filters.voxel import voxel_downsample
 
 
 def main() -> None:
@@ -84,10 +88,80 @@ def run_pipeline(
         return
 
     if stage == "full":
-        _run_full_smoke(config, output)
+        if config.get("dataset"):
+            _run_full_kitti(config, output)
+        else:
+            _run_full_smoke(config, output)
         return
 
     raise ValueError(f"Unsupported pipeline stage: {stage}")
+
+
+def _run_full_kitti(config: dict[str, Any], output: Path) -> None:
+    """Run the full pipeline on real KITTI data.
+
+    Stages: ingest → RANSAC ground separation → voxel downsample →
+    lane extraction → QA → write viewer outputs.
+
+    Output FRAME: all written coordinates are world ENU.
+    """
+    dataset = config.get("dataset", {})
+    repo_root = Path(__file__).resolve().parents[1]
+
+    scene_path = Path(dataset["scene"])
+    calib_path = Path(dataset["calib"])
+    if not scene_path.is_absolute():
+        scene_path = repo_root / scene_path
+    if not calib_path.is_absolute():
+        calib_path = repo_root / calib_path
+
+    n_frames = int(config["pipeline"]["n_frames_accumulate"])
+
+    # Stage 1: ingest — accumulate LiDAR frames in world ENU
+    acc_path = output / "accumulated.parquet"
+    accumulate_kitti_frames(
+        scene_dir=scene_path,
+        calib_dir=calib_path,
+        output_path=acc_path,
+        n_frames=n_frames,
+    )
+    print(f"[ingest] wrote {acc_path}")
+
+    # Stage 2: load accumulated cloud
+    df = pd.read_parquet(acc_path)
+    points_4 = df[["x", "y", "z", "intensity"]].to_numpy(dtype=np.float32)
+    print(f"[load]   {len(points_4):,} points in world ENU")
+
+    # Stage 3: RANSAC ground separation
+    ransac_cfg = RansacConfig(**config["filters"]["ransac"])
+    ground_result = ransac_ground_plane(points_4[:, :3], ransac_cfg)
+    ground_4 = points_4[ground_result.ground_mask]
+    print(f"[ransac] inlier_ratio={ground_result.inlier_ratio:.3f}, "
+          f"{len(ground_4):,} ground points")
+
+    # Stage 4: voxel downsample ground for extraction
+    ground_voxed = voxel_downsample(
+        ground_4, voxel_size=float(config["filters"]["voxel_size"])
+    )
+    print(f"[voxel]  {len(ground_voxed):,} points after downsampling")
+
+    # Stage 5: geometric lane extraction
+    extraction_cfg = ExtractionConfig(**config["extraction"])
+    features = extract_lane_boundaries(ground_voxed, extraction_cfg)
+    print(f"[extract] {len(features)} lane boundary features")
+
+    # Stage 6: QA — no external GT for KITTI scene 0005
+    qa_cfg = QAConfig(max_gt_match_distance=config["qa"]["max_gt_match_distance"])
+    report = compute_qa_metrics(features, [], qa_cfg, scene_id="kitti_0005")
+
+    # Stage 7: write outputs for the viewer
+    _write_points_bin(output / "points.bin", points_4)
+    _write_geojson(output / "features.geojson", features)
+    (output / "qa_report.json").write_text(
+        json.dumps(asdict(report), indent=2), encoding="utf-8"
+    )
+    print(f"[done]   wrote {output / 'points.bin'} ({len(points_4):,} pts), "
+          f"{output / 'features.geojson'} ({len(features)} features)")
 
 
 def _run_full_smoke(config: dict[str, Any], output: Path) -> None:

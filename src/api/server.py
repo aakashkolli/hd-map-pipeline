@@ -17,7 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-CONFIG = ROOT / "configs" / "default.yaml"
+CONFIG = ROOT / "configs" / "kitti.yaml"
 OUTPUT_DIR = ROOT / "data" / "outputs"
 
 app = FastAPI()
