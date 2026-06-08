@@ -36,6 +36,7 @@ jobs:
         working-directory: src/viz
         env:
           VITE_BASE: /hd-map-pipeline/
+          VITE_DEMO_MODE: 'true'
         run: npx vite build
 
       - name: Add .nojekyll

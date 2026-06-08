@@ -119,10 +119,6 @@ const sidebar = new Sidebar({
     activeFrame = frame;
     activeStage = stage;
     loadSceneData(frame, stage);
-    updateBEVPanel(frame, stage);
-  },
-  onBEVToggle() {
-    toggleBEVPanel();
   },
   onRunPipeline() {
     sidebar.setPipelineStatus('running');
@@ -203,8 +199,6 @@ window.addEventListener('keydown', (event) => {
     }
     case 'r':
     case 'R': cameraCtrl.resetToLastRecenter(); break;
-    case 'b':
-    case 'B': toggleBEVPanel(); break;
   }
 });
 
@@ -341,41 +335,13 @@ async function loadSceneData(
   }
 }
 
-/* ─── BEV image panel ────────────────────────────────────────── */
-
-function bevUrl(frame: FrameSelector): string {
-  const idx = frame === 'accumulated' ? 0 : frame;
-  return `${import.meta.env.BASE_URL}data/bev/frame_${idx}_bev.png`;
-}
-
-function updateBEVPanel(frame: FrameSelector, stage: StageSelector): void {
-  const img = document.getElementById('bev-img') as HTMLImageElement;
-  const label = document.getElementById('bev-label')!;
-  const frameStr = frame === 'accumulated' ? 'Accumulated' : `Frame ${frame}`;
-  img.src = bevUrl(frame);
-  label.textContent = `BEV · ${frameStr} · ground layer`;
-  // stage only affects the 3D view — BEV is always ground projection
-  void stage;
-}
-
-function toggleBEVPanel(): void {
-  const panel = document.getElementById('bev-panel')!;
-  panel.classList.toggle('visible');
-}
-
-document.getElementById('bev-close')!.addEventListener('click', () => {
-  document.getElementById('bev-panel')!.classList.remove('visible');
-});
-
 function flashScene(): void {
   const el = document.getElementById('scene-flash')!;
   el.classList.add('active');
   setTimeout(() => el.classList.remove('active'), 120);
 }
 
-// Default to Frame 0 raw on initial load; falls back to accumulated points.bin if not found.
 loadSceneData(0, 'raw');
-updateBEVPanel(0, 'raw');
 
 /* ─── Benchmark metrics ──────────────────────────────────────── */
 

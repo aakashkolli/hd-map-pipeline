@@ -18,7 +18,6 @@ type SidebarCallbacks = {
   onResetCamera: () => void;
   onRunPipeline: () => void;
   onSceneChange: (frame: FrameSelector, stage: StageSelector) => void;
-  onBEVToggle: () => void;
 };
 
 const LAYER_CONFIG: Array<{ key: LayerKey; label: string; color: string; shortcut: string }> = [
@@ -53,15 +52,25 @@ export class Sidebar {
 
   private buildDOM(): void {
     const sidebar = document.getElementById('sidebar')!;
+    const demoMode = import.meta.env.VITE_DEMO_MODE === 'true';
+
     sidebar.innerHTML = `
       <div class="sb-header">
         <span class="sb-title">HD Map Viewer</span>
+        <a class="sb-github-link" href="https://github.com/aakashkolli/hd-map-pipeline" target="_blank" rel="noopener" title="View on GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
       </div>
 
       <div class="sb-section">
         <div class="sb-section-label">Pipeline</div>
-        <button class="sb-run-btn" id="run-pipeline-btn">Run Pipeline</button>
-        <div id="pipeline-status" class="sb-pipeline-status"></div>
+        ${demoMode
+          ? `<div class="sb-demo-note">static demo · run locally to process new data</div>`
+          : `<button class="sb-run-btn" id="run-pipeline-btn">Run Pipeline</button>
+             <div id="pipeline-status" class="sb-pipeline-status"></div>`
+        }
       </div>
 
       <div class="sb-section">
@@ -108,10 +117,6 @@ export class Sidebar {
 
       <div class="sb-section">
         <div class="sb-section-label">View</div>
-        <button class="sb-view-btn" id="bev-toggle" style="margin-bottom:4px">
-          <span>BEV image</span>
-          <span class="sb-key">[B]</span>
-        </button>
         <button class="sb-view-btn" id="view-toggle">
           <span id="view-label">Perspective</span>
           <span class="sb-key">[V]</span>
@@ -159,10 +164,6 @@ export class Sidebar {
     intensityBtn.addEventListener('click', () => this.setColorMode('intensity'));
     heightBtn.addEventListener('click', () => this.setColorMode('height'));
 
-    document.getElementById('bev-toggle')!.addEventListener('click', () => {
-      this.callbacks.onBEVToggle();
-    });
-
     document.getElementById('view-toggle')!.addEventListener('click', () => {
       this.callbacks.onViewToggle();
     });
@@ -177,12 +178,14 @@ export class Sidebar {
     this.qaSectionEl = document.getElementById('qa-section')!;
     this.qaMetricsEl = document.getElementById('qa-metrics')!;
     this.pointCountEl = document.getElementById('point-count')!;
-    this.pipelineBtnEl = document.getElementById('run-pipeline-btn') as HTMLButtonElement;
-    this.pipelineStatusEl = document.getElementById('pipeline-status')!;
+    this.pipelineBtnEl = (document.getElementById('run-pipeline-btn') ?? document.createElement('button')) as HTMLButtonElement;
+    this.pipelineStatusEl = document.getElementById('pipeline-status') ?? document.createElement('div');
 
-    this.pipelineBtnEl.addEventListener('click', () => {
-      this.callbacks.onRunPipeline();
-    });
+    if (document.getElementById('run-pipeline-btn')) {
+      this.pipelineBtnEl.addEventListener('click', () => {
+        this.callbacks.onRunPipeline();
+      });
+    }
 
     // Scene: frame selector buttons
     const frameGroup = document.getElementById('scene-frame-group')!;
