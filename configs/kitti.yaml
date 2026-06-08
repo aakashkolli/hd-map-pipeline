@@ -4,3 +4,9 @@ dataset:
   scene: "data/raw/kitti/2011_09_26_drive_0005_sync"
   calib: "data/raw/kitti/2011_09_26_calib"
 
+pipeline:
+  n_frames_accumulate: 5      # only 5 frames exist in the sample dataset
+
+filters:
+  ransac:
+    seed_xy_radius: 200.0     # cover full multi-frame ENU extent for batch RANSAC
