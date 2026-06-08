@@ -4,7 +4,7 @@ A production-oriented LiDAR feature extraction pipeline for autonomous vehicle H
 
 Built to demonstrate fit for day-to-day AV mapping infrastructure work: data pipelines over sensor data, automation algorithms for feature extraction, QA tooling for map validation, and ML integration on spatial datasets.
 
-**Live demo:** after pushing to GitHub, enable Pages (`Settings → Pages → Source: GitHub Actions`). The viewer deploys automatically on every push to `main` and is available at `https://<your-username>.github.io/hd-map-pipeline/` — no server required.
+**Live demo:** https://aakashkolli.github.io/hd-map-pipeline/ — deploys automatically on every push to `main` via GitHub Actions, no server required.
 
 ---
 
@@ -153,11 +153,7 @@ Press `B` or click **BEV image** in the sidebar to open a floating 300×300 px p
 
 ## GitHub Pages Deployment
 
-The viewer builds to `docs/` and deploys automatically on every push to `main` via GitHub Actions (`.github/workflows/deploy.yml`). To enable:
-
-1. Push to GitHub
-2. Go to `Settings → Pages → Source: GitHub Actions`
-3. The next push to `main` triggers a deploy
+The viewer builds to `docs/` and deploys automatically on every push to `main` via GitHub Actions (`.github/workflows/deploy.yml`). Pages is enabled on this repo — every push to `main` triggers a redeploy automatically.
 
 The deployed viewer includes all pre-computed pipeline outputs (point cloud frames, BEV images, extracted features, QA report). The **Run Pipeline** button requires a running API server and will show an error message on the static Pages deployment — this is expected.
 
