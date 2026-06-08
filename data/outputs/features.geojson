@@ -5,21 +5,21 @@
       "type": "Feature",
       "properties": {
         "feature_type": "lane_line",
-        "confidence": 1.0,
+        "confidence": 0.9567199349403381,
         "source": "geometric"
       },
       "geometry": {
         "type": "LineString",
         "coordinates": [
           [
-            0.0,
-            -1.5,
-            0.0
+            -33.10481643676758,
+            -4.204355239868164,
+            0.0041980743408203125
           ],
           [
-            50.0,
-            -1.5,
-            0.0
+            -33.62242889404297,
+            -3.9437661170959473,
+            -0.0008260136237367988
           ]
         ]
       }
@@ -28,21 +28,3954 @@
       "type": "Feature",
       "properties": {
         "feature_type": "lane_line",
-        "confidence": 1.0,
+        "confidence": 0.967528760433197,
         "source": "geometric"
       },
       "geometry": {
         "type": "LineString",
         "coordinates": [
           [
-            0.0,
-            1.5,
-            0.0
+            26.257915496826172,
+            13.796419143676758,
+            -0.01991185173392296
           ],
           [
-            50.0,
-            1.5,
-            0.0
+            26.71082305908203,
+            14.058544158935547,
+            0.03446883708238602
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9611303210258484,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -20.048994064331055,
+            -0.8424027562141418,
+            -0.009499475359916687
+          ],
+          [
+            -20.409395217895508,
+            -1.2834640741348267,
+            -0.002316712634637952
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9638188481330872,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            24.07710838317871,
+            -5.901981353759766,
+            -0.05237255617976189
+          ],
+          [
+            24.01409912109375,
+            -5.338669300079346,
+            -0.012555238790810108
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9634678959846497,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -7.178603649139404,
+            11.900325775146484,
+            0.007106062490493059
+          ],
+          [
+            -7.796904563903809,
+            12.028915405273438,
+            0.014856083318591118
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.8378010392189026,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -35.00177001953125,
+            -1.8304475545883179,
+            -0.03802181035280228
+          ],
+          [
+            35.10554504394531,
+            -1.8610496520996094,
+            -0.022209377959370613
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9505516290664673,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -33.12247848510742,
+            -19.187156677246094,
+            0.020666874945163727
+          ],
+          [
+            -33.67731857299805,
+            -19.078805923461914,
+            0.028998980298638344
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.8414469361305237,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            35.06957244873047,
+            1.8961809873580933,
+            -0.029536927118897438
+          ],
+          [
+            -35.00820541381836,
+            1.6380972862243652,
+            0.00802326574921608
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9536160230636597,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.387767791748047,
+            -15.747479438781738,
+            0.02532554790377617
+          ],
+          [
+            9.905033111572266,
+            -15.832253456115723,
+            0.012754522264003754
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9669632911682129,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -2.5266687870025635,
+            -15.374321937561035,
+            0.015765896067023277
+          ],
+          [
+            -3.0451583862304688,
+            -14.986318588256836,
+            0.027428047731518745
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9650893807411194,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            37.00431823730469,
+            -2.1204402446746826,
+            -0.06057865917682648
+          ],
+          [
+            36.064273834228516,
+            -2.467893362045288,
+            -0.0038319332525134087
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9593979120254517,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -6.566999435424805,
+            -15.712169647216797,
+            -0.011181256733834743
+          ],
+          [
+            -6.311324119567871,
+            -16.293622970581055,
+            0.00035950832534581423
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9577804803848267,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            38.10223388671875,
+            -19.221637725830078,
+            0.019957516342401505
+          ],
+          [
+            37.842262268066406,
+            -19.624589920043945,
+            0.0069544557482004166
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7437361478805542,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -10.716723442077637,
+            -8.005232810974121,
+            -0.04916742816567421
+          ],
+          [
+            -10.289478302001953,
+            -7.904732704162598,
+            -0.0008263373165391386
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9641888737678528,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            23.356985092163086,
+            2.5007083415985107,
+            0.004700759891420603
+          ],
+          [
+            24.09171485900879,
+            2.2957675457000732,
+            0.021425941959023476
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.960749089717865,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -29.39663314819336,
+            15.354082107543945,
+            -0.00993721466511488
+          ],
+          [
+            -29.361194610595703,
+            15.911104202270508,
+            -0.010738097131252289
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9583413600921631,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -26.5454044342041,
+            17.67218589782715,
+            -0.014286251738667488
+          ],
+          [
+            -26.71091651916504,
+            17.1213436126709,
+            0.029057232663035393
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9590424299240112,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.5035593509674072,
+            17.229814529418945,
+            0.009085360914468765
+          ],
+          [
+            1.1578673124313354,
+            17.089191436767578,
+            0.06436320394277573
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9619712233543396,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -14.119584083557129,
+            -9.91080093383789,
+            0.02901209518313408
+          ],
+          [
+            -14.378850936889648,
+            -10.299630165100098,
+            0.002188542392104864
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9655299782752991,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -35.05121994018555,
+            -18.705846786499023,
+            -0.010503520257771015
+          ],
+          [
+            -35.12030029296875,
+            -19.212156295776367,
+            0.02912922203540802
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9630616307258606,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            38.89818572998047,
+            -7.464585304260254,
+            0.0031306096352636814
+          ],
+          [
+            38.71031951904297,
+            -7.998543739318848,
+            -0.011461453512310982
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9666152596473694,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -34.43109130859375,
+            -17.955049514770508,
+            0.008333927020430565
+          ],
+          [
+            -33.93149185180664,
+            -17.540084838867188,
+            -0.03635963425040245
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9637139439582825,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            7.481749057769775,
+            -3.3689026832580566,
+            0.014925978146493435
+          ],
+          [
+            7.9475626945495605,
+            -3.2957983016967773,
+            -0.05150071904063225
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9588000178337097,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -3.817308187484741,
+            -9.183831214904785,
+            -0.039470747113227844
+          ],
+          [
+            -4.265345573425293,
+            -9.561477661132812,
+            0.013471140526235104
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9736716151237488,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            14.454702377319336,
+            14.39911937713623,
+            -0.01571737788617611
+          ],
+          [
+            15.08877944946289,
+            14.59613037109375,
+            0.030017457902431488
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9593062996864319,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            12.19078540802002,
+            -17.567142486572266,
+            -0.0006342463893815875
+          ],
+          [
+            12.625324249267578,
+            -17.850435256958008,
+            -0.009539970196783543
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9394736289978027,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -26.823509216308594,
+            -5.145877838134766,
+            -0.02417178638279438
+          ],
+          [
+            -27.301013946533203,
+            -4.839628219604492,
+            0.03233334794640541
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9598538875579834,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            27.326087951660156,
+            -13.842413902282715,
+            0.004689918365329504
+          ],
+          [
+            27.346715927124023,
+            -14.489754676818848,
+            -0.033970218151807785
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.950151801109314,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -28.140596389770508,
+            11.20012378692627,
+            0.053120214492082596
+          ],
+          [
+            -28.570430755615234,
+            12.054926872253418,
+            -0.015751399099826813
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9622414708137512,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -26.86689567565918,
+            -11.711593627929688,
+            -0.0015155849978327751
+          ],
+          [
+            -26.99201011657715,
+            -11.162930488586426,
+            0.000891844101715833
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9662725925445557,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -21.971477508544922,
+            2.30427622795105,
+            0.03031028062105179
+          ],
+          [
+            -22.68611717224121,
+            2.6675074100494385,
+            -0.025261130183935165
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7495091557502747,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            29.420616149902344,
+            -8.23768424987793,
+            -0.037852901965379715
+          ],
+          [
+            29.661684036254883,
+            -7.8056254386901855,
+            0.1405244618654251
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9597605466842651,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            38.19809341430664,
+            9.929475784301758,
+            -0.07143118977546692
+          ],
+          [
+            37.31879806518555,
+            9.861296653747559,
+            -0.01588321663439274
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.964568018913269,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -31.330677032470703,
+            -6.776607513427734,
+            0.044182345271110535
+          ],
+          [
+            -31.411699295043945,
+            -6.208475112915039,
+            0.010087567381560802
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9663828015327454,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -17.307010650634766,
+            12.49575424194336,
+            0.01680242456495762
+          ],
+          [
+            -17.32965850830078,
+            12.030673027038574,
+            0.025700712576508522
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9420987963676453,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            13.212471961975098,
+            -10.045272827148438,
+            0.013288872316479683
+          ],
+          [
+            13.727839469909668,
+            -9.91303825378418,
+            -0.011354471556842327
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9696744084358215,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            17.852848052978516,
+            19.798133850097656,
+            0.007935888133943081
+          ],
+          [
+            18.168190002441406,
+            19.391592025756836,
+            0.013083165511488914
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9519083499908447,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -15.400246620178223,
+            11.748617172241211,
+            -0.007571757771074772
+          ],
+          [
+            -15.22713565826416,
+            12.029980659484863,
+            -0.02383933961391449
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9631789922714233,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            1.7684510946273804,
+            -6.278379440307617,
+            0.0038930128794163465
+          ],
+          [
+            1.3841372728347778,
+            -6.653533935546875,
+            0.033182770013809204
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9715480804443359,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            34.244468688964844,
+            -16.55360221862793,
+            0.053894177079200745
+          ],
+          [
+            33.473609924316406,
+            -16.41825294494629,
+            0.0008458900265395641
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9637865424156189,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            20.294376373291016,
+            4.679440975189209,
+            0.005375172011554241
+          ],
+          [
+            20.136962890625,
+            5.201725959777832,
+            -0.06363419443368912
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9637061357498169,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            13.911566734313965,
+            -10.856281280517578,
+            0.033847302198410034
+          ],
+          [
+            14.423139572143555,
+            -11.000676155090332,
+            -0.055962931364774704
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9699340462684631,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -24.41819953918457,
+            3.1133813858032227,
+            0.02935910038650036
+          ],
+          [
+            -24.359529495239258,
+            2.6513633728027344,
+            -0.052453525364398956
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9705618023872375,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -3.9086034297943115,
+            14.733013153076172,
+            -0.019252341240644455
+          ],
+          [
+            -3.310565710067749,
+            14.439990997314453,
+            0.05547410249710083
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9653511047363281,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            34.7365608215332,
+            -11.210750579833984,
+            0.0044475458562374115
+          ],
+          [
+            34.712730407714844,
+            -11.609298706054688,
+            -0.00663743494078517
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9492582678794861,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -19.530195236206055,
+            -19.76917266845703,
+            0.03673103079199791
+          ],
+          [
+            -18.97199249267578,
+            -19.510587692260742,
+            0.05213058739900589
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9584679007530212,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -8.682286262512207,
+            -4.861657619476318,
+            0.03182731941342354
+          ],
+          [
+            -8.769221305847168,
+            -4.471622943878174,
+            0.019520366564393044
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9614933729171753,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -11.5829439163208,
+            -9.240546226501465,
+            -0.02155272848904133
+          ],
+          [
+            -11.363038063049316,
+            -8.751112937927246,
+            0.032560721039772034
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9611319899559021,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            28.99803924560547,
+            -5.698070049285889,
+            -0.045240506529808044
+          ],
+          [
+            29.444570541381836,
+            -5.854825973510742,
+            0.03834761679172516
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9696041941642761,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.951574325561523,
+            3.5990025997161865,
+            -0.015206324867904186
+          ],
+          [
+            30.89093017578125,
+            4.133016586303711,
+            0.027688894420862198
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9686980247497559,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            30.532440185546875,
+            -12.805364608764648,
+            0.017132611945271492
+          ],
+          [
+            30.37038803100586,
+            -13.249246597290039,
+            -0.04239334538578987
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.956204891204834,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -33.431766510009766,
+            -13.18913459777832,
+            0.016465477645397186
+          ],
+          [
+            -32.6081428527832,
+            -13.115302085876465,
+            -0.0024744912516325712
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9556969404220581,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -31.21967887878418,
+            -16.910018920898438,
+            -0.0038373011630028486
+          ],
+          [
+            -30.433706283569336,
+            -17.107208251953125,
+            0.008915225975215435
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9657068252563477,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.4328771233558655,
+            -13.742083549499512,
+            0.016076810657978058
+          ],
+          [
+            0.8763318657875061,
+            -13.891037940979004,
+            -0.041798077523708344
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9501021504402161,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -12.7122163772583,
+            0.18927185237407684,
+            -0.004651363007724285
+          ],
+          [
+            -13.170916557312012,
+            0.3439862132072449,
+            0.025583403185009956
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9787572026252747,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            20.42043113708496,
+            9.049042701721191,
+            -0.014550499618053436
+          ],
+          [
+            21.206998825073242,
+            9.103981018066406,
+            -0.030986996367573738
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9589505195617676,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -25.811376571655273,
+            -6.908453464508057,
+            0.02577209286391735
+          ],
+          [
+            -26.27812957763672,
+            -6.900116920471191,
+            0.007478233892470598
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9563021659851074,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            35.029300689697266,
+            13.328726768493652,
+            0.037259943783283234
+          ],
+          [
+            35.10026550292969,
+            12.592474937438965,
+            0.04212721064686775
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9582499861717224,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.416924953460693,
+            -2.993303060531616,
+            0.06954000145196915
+          ],
+          [
+            5.046331405639648,
+            -2.848099708557129,
+            0.041412603110075
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.959481954574585,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -12.797419548034668,
+            4.663206577301025,
+            -0.011858295649290085
+          ],
+          [
+            -13.26151180267334,
+            4.506600379943848,
+            -0.011825847439467907
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9507384896278381,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            38.51267623901367,
+            17.1583251953125,
+            0.004556449130177498
+          ],
+          [
+            38.800804138183594,
+            16.702573776245117,
+            0.05431994050741196
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9527629017829895,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -35.67284393310547,
+            16.576059341430664,
+            0.0089738629758358
+          ],
+          [
+            -35.7564582824707,
+            16.03829002380371,
+            -0.03652794286608696
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9659875631332397,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.15062834322452545,
+            16.488208770751953,
+            -0.028525451198220253
+          ],
+          [
+            -0.3651473820209503,
+            16.121580123901367,
+            0.0016180953243747354
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7797761559486389,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            10.368206977844238,
+            8.66508960723877,
+            0.006296044681221247
+          ],
+          [
+            10.113626480102539,
+            8.19918155670166,
+            -0.012481453828513622
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9631892442703247,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            26.348798751831055,
+            -15.37022876739502,
+            0.006158972624689341
+          ],
+          [
+            25.71657371520996,
+            -15.092223167419434,
+            -0.0029733155388385057
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7028114795684814,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            7.284848213195801,
+            -7.6013593673706055,
+            0.0010761406738311052
+          ],
+          [
+            6.957461833953857,
+            -8.05616569519043,
+            0.07461415231227875
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9555731415748596,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            35.231422424316406,
+            -3.7717902660369873,
+            -0.023577159270644188
+          ],
+          [
+            35.684486389160156,
+            -3.5989439487457275,
+            -0.00837448239326477
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9740044474601746,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            8.424567222595215,
+            -3.1969943046569824,
+            -0.06051364168524742
+          ],
+          [
+            8.91885757446289,
+            -3.2188267707824707,
+            -0.029037872329354286
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9682686924934387,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -14.97803783416748,
+            -0.24730589985847473,
+            -0.05729832500219345
+          ],
+          [
+            -14.291667938232422,
+            -0.7002277374267578,
+            -0.024963337928056717
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.736823320388794,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            1.4689466953277588,
+            8.519755363464355,
+            0.03465956449508667
+          ],
+          [
+            0.8619285225868225,
+            8.389084815979004,
+            -0.05747118219733238
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7354806065559387,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -25.887205123901367,
+            -8.731680870056152,
+            0.010977715253829956
+          ],
+          [
+            -26.217906951904297,
+            -8.088518142700195,
+            0.1069861650466919
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.964745283126831,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            31.904638290405273,
+            -4.534712314605713,
+            0.016841599717736244
+          ],
+          [
+            31.978675842285156,
+            -4.843623161315918,
+            -0.01062775868922472
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9634731411933899,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            20.253713607788086,
+            16.55636215209961,
+            0.0020419771317392588
+          ],
+          [
+            20.59514045715332,
+            16.855016708374023,
+            -0.023017270490527153
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9610962867736816,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            25.130197525024414,
+            15.279865264892578,
+            0.01752473972737789
+          ],
+          [
+            24.870059967041016,
+            16.021244049072266,
+            0.034096863120794296
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9657973647117615,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.6815275549888611,
+            -16.580156326293945,
+            -0.02731277421116829
+          ],
+          [
+            1.3186728954315186,
+            -16.54128646850586,
+            -0.029998555779457092
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9601052403450012,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            11.688944816589355,
+            -7.823510646820068,
+            0.10547155141830444
+          ],
+          [
+            11.984274864196777,
+            -7.780328750610352,
+            0.003896088572219014
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9499058127403259,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -1.379101037979126,
+            -6.389121055603027,
+            0.01900939643383026
+          ],
+          [
+            -1.4351052045822144,
+            -6.919161796569824,
+            -0.007900248281657696
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9640674591064453,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            19.12698745727539,
+            -7.03275728225708,
+            -0.0338127464056015
+          ],
+          [
+            18.926769256591797,
+            -6.671742916107178,
+            -0.08971752971410751
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.970872700214386,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            17.886516571044922,
+            -16.318511962890625,
+            0.04421176388859749
+          ],
+          [
+            18.086881637573242,
+            -15.872316360473633,
+            -0.05419788882136345
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9757788777351379,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -30.717254638671875,
+            17.336612701416016,
+            -0.03226204589009285
+          ],
+          [
+            -31.17584228515625,
+            17.28843116760254,
+            0.007312779314815998
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.964293360710144,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -32.83849334716797,
+            13.786581039428711,
+            0.03505132719874382
+          ],
+          [
+            -33.29952621459961,
+            13.975465774536133,
+            -0.013034911826252937
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9552876353263855,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.6854822635650635,
+            6.096625804901123,
+            -0.02537703886628151
+          ],
+          [
+            -0.35190343856811523,
+            6.331461429595947,
+            -0.0238710455596447
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9495787024497986,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            16.565265655517578,
+            15.202486991882324,
+            0.044128965586423874
+          ],
+          [
+            16.6843318939209,
+            15.925251960754395,
+            -0.004438645672053099
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9698099493980408,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            3.6418142318725586,
+            15.658178329467773,
+            0.03079594299197197
+          ],
+          [
+            3.2646191120147705,
+            16.131080627441406,
+            -0.008092768490314484
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9604393839836121,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            15.79410457611084,
+            15.25879192352295,
+            0.01121591217815876
+          ],
+          [
+            15.338869094848633,
+            14.848992347717285,
+            -0.044675927609205246
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9638577103614807,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            33.23959732055664,
+            13.040689468383789,
+            -0.007561472710222006
+          ],
+          [
+            33.10053634643555,
+            12.41752815246582,
+            0.04394407197833061
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9664124846458435,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -6.250987529754639,
+            7.7214579582214355,
+            -0.01941627636551857
+          ],
+          [
+            -6.4325175285339355,
+            7.102653503417969,
+            -0.060607098042964935
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9703373312950134,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            10.405733108520508,
+            10.88499927520752,
+            -0.02398117631673813
+          ],
+          [
+            10.21451473236084,
+            10.337979316711426,
+            0.020044296979904175
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.943410336971283,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            29.077899932861328,
+            -9.387406349182129,
+            -0.008989532478153706
+          ],
+          [
+            29.372671127319336,
+            -9.874682426452637,
+            -0.013120814226567745
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9684891104698181,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -18.842021942138672,
+            -6.265966415405273,
+            -0.025781426578760147
+          ],
+          [
+            -18.248226165771484,
+            -6.0890302658081055,
+            -0.0015282497042790055
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9691458940505981,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -20.341739654541016,
+            16.967750549316406,
+            0.04458579793572426
+          ],
+          [
+            -20.24271583557129,
+            16.475481033325195,
+            -0.0045362189412117004
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9578068852424622,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            6.48792028427124,
+            0.024906903505325317,
+            0.001409170450642705
+          ],
+          [
+            6.017269134521484,
+            0.34193533658981323,
+            0.03685750439763069
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9729570746421814,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            14.9993896484375,
+            10.901581764221191,
+            0.041472841054201126
+          ],
+          [
+            15.344425201416016,
+            10.664861679077148,
+            0.025549527257680893
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.958783745765686,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -35.1678466796875,
+            -4.639851093292236,
+            -0.03634817525744438
+          ],
+          [
+            -35.79266357421875,
+            -4.569775581359863,
+            -0.001526195090264082
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.8009082674980164,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            20.455968856811523,
+            -7.724492073059082,
+            -0.0031670555472373962
+          ],
+          [
+            20.892147064208984,
+            -8.075719833374023,
+            0.1487581729888916
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9747498035430908,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -33.165889739990234,
+            -15.981242179870605,
+            0.01991965062916279
+          ],
+          [
+            -32.80750274658203,
+            -16.296646118164062,
+            -0.06345606595277786
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9547019600868225,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            21.793176651000977,
+            4.735612869262695,
+            0.0021086609922349453
+          ],
+          [
+            22.302282333374023,
+            5.07466983795166,
+            -0.008296619169414043
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9683516025543213,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            18.085336685180664,
+            -3.1245906352996826,
+            0.03562656790018082
+          ],
+          [
+            18.231691360473633,
+            -3.5233895778656006,
+            -0.024006355553865433
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9502877593040466,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -32.41324234008789,
+            15.717123031616211,
+            -0.014233909547328949
+          ],
+          [
+            -32.142486572265625,
+            16.01105499267578,
+            0.0326395146548748
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.97489994764328,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            32.08659362792969,
+            -8.827507019042969,
+            -0.020116733387112617
+          ],
+          [
+            31.835039138793945,
+            -8.479026794433594,
+            -0.021378284320235252
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9567205309867859,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            13.190482139587402,
+            10.64566707611084,
+            0.01998746581375599
+          ],
+          [
+            13.654065132141113,
+            10.44714069366455,
+            0.00568804144859314
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9665781259536743,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -11.692747116088867,
+            -19.801755905151367,
+            0.00781984906643629
+          ],
+          [
+            -11.313172340393066,
+            -19.335405349731445,
+            -0.03983914107084274
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9577924013137817,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            1.7671362161636353,
+            -4.9290771484375,
+            -0.004308686126023531
+          ],
+          [
+            1.609925389289856,
+            -4.523014545440674,
+            0.029697835445404053
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9652312994003296,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -29.6795654296875,
+            11.038731575012207,
+            0.007935505360364914
+          ],
+          [
+            -29.368608474731445,
+            10.766648292541504,
+            -0.032297488301992416
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9779402613639832,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            26.221405029296875,
+            3.6596245765686035,
+            -0.014382671564817429
+          ],
+          [
+            26.48017692565918,
+            4.00756311416626,
+            -0.0158370453864336
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9597263336181641,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -21.75727653503418,
+            19.418582916259766,
+            0.054082829505205154
+          ],
+          [
+            -21.48047637939453,
+            18.942956924438477,
+            -0.03030472621321678
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9581689834594727,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -15.913841247558594,
+            -5.247564315795898,
+            0.01857185922563076
+          ],
+          [
+            -16.263580322265625,
+            -4.9801154136657715,
+            -0.01862134225666523
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9645653367042542,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            32.91974639892578,
+            -2.5089333057403564,
+            0.029691249132156372
+          ],
+          [
+            32.258670806884766,
+            -2.5683364868164062,
+            -0.0148354796692729
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9789391160011292,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -39.10718536376953,
+            6.515006065368652,
+            0.0033158755395561457
+          ],
+          [
+            -38.5505485534668,
+            6.506287574768066,
+            -0.018492160364985466
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9582889676094055,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            27.81882667541504,
+            4.887470722198486,
+            0.013008255511522293
+          ],
+          [
+            28.078487396240234,
+            5.236288070678711,
+            0.003598345909267664
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.981299638748169,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -28.97218132019043,
+            -6.873766899108887,
+            0.0034615083131939173
+          ],
+          [
+            -28.447917938232422,
+            -6.851961612701416,
+            0.011164700612425804
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9612445831298828,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            8.654457092285156,
+            4.826234340667725,
+            -0.017442788928747177
+          ],
+          [
+            8.9677152633667,
+            5.1070685386657715,
+            -0.04568403214216232
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9637910723686218,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -22.926000595092773,
+            -10.84807300567627,
+            -0.019718477502465248
+          ],
+          [
+            -23.270965576171875,
+            -10.290421485900879,
+            0.008823744021356106
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9662941694259644,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            6.13059663772583,
+            18.489105224609375,
+            0.012544643133878708
+          ],
+          [
+            6.1298909187316895,
+            17.537574768066406,
+            -0.02745329588651657
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9640406966209412,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -10.824353218078613,
+            12.095235824584961,
+            -0.0094839446246624
+          ],
+          [
+            -10.346319198608398,
+            12.118616104125977,
+            -0.01945611834526062
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9604611992835999,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.16339115798473358,
+            -16.46695327758789,
+            -0.012838948518037796
+          ],
+          [
+            0.28731921315193176,
+            -16.693037033081055,
+            -0.05713798105716705
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9647510051727295,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            6.467315673828125,
+            6.847838401794434,
+            -0.01034617517143488
+          ],
+          [
+            6.363139629364014,
+            6.362104415893555,
+            -0.012672492302954197
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9659481048583984,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -17.204275131225586,
+            -7.73837423324585,
+            -0.01059818733483553
+          ],
+          [
+            -17.1057186126709,
+            -7.110463619232178,
+            0.00041193398647010326
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.966062068939209,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -7.59602165222168,
+            19.899377822875977,
+            0.004986356943845749
+          ],
+          [
+            -7.498551368713379,
+            19.355880737304688,
+            -0.03940071538090706
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9446929693222046,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -12.251075744628906,
+            -10.526959419250488,
+            -0.04254956915974617
+          ],
+          [
+            -11.788535118103027,
+            -10.959905624389648,
+            -0.005113526713103056
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9515241980552673,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -13.002897262573242,
+            -13.850717544555664,
+            -0.018820077180862427
+          ],
+          [
+            -13.672717094421387,
+            -13.789046287536621,
+            0.020745133981108665
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9553346633911133,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -27.069904327392578,
+            -9.023158073425293,
+            -0.010619246400892735
+          ],
+          [
+            -26.757953643798828,
+            -9.530197143554688,
+            -0.004800188820809126
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9661193490028381,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            17.876113891601562,
+            -9.333333969116211,
+            0.011930383741855621
+          ],
+          [
+            18.43070411682129,
+            -9.198787689208984,
+            0.024341290816664696
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9676913619041443,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -14.45853328704834,
+            10.294496536254883,
+            -0.010758842341601849
+          ],
+          [
+            -13.93464183807373,
+            10.247966766357422,
+            -0.0446791797876358
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9710389971733093,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            24.21564292907715,
+            -6.957470893859863,
+            -0.0004419187316671014
+          ],
+          [
+            24.476837158203125,
+            -6.766140460968018,
+            0.07062804698944092
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9556452035903931,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            19.859132766723633,
+            -3.5417726039886475,
+            0.012968504801392555
+          ],
+          [
+            19.371936798095703,
+            -3.5465328693389893,
+            -0.012700943276286125
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9577734470367432,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -29.20138168334961,
+            -16.43168067932129,
+            -0.012143328785896301
+          ],
+          [
+            -29.705991744995117,
+            -15.737748146057129,
+            -0.08194037526845932
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9637259840965271,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -23.923158645629883,
+            11.766485214233398,
+            0.01677774451673031
+          ],
+          [
+            -24.314434051513672,
+            11.733644485473633,
+            -0.014138611033558846
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9656193256378174,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -24.15958595275879,
+            14.022488594055176,
+            -0.02159535512328148
+          ],
+          [
+            -23.740877151489258,
+            13.708767890930176,
+            0.0025711776688694954
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9499479532241821,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -37.65911865234375,
+            15.284988403320312,
+            0.006710692774504423
+          ],
+          [
+            -38.1769905090332,
+            16.002212524414062,
+            0.0016293119406327605
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9649156332015991,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            23.812231063842773,
+            -17.802093505859375,
+            -0.03601759299635887
+          ],
+          [
+            23.980945587158203,
+            -17.266845703125,
+            -0.004935463424772024
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9574493765830994,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            38.6137809753418,
+            13.417786598205566,
+            0.014852134510874748
+          ],
+          [
+            38.20753479003906,
+            13.280640602111816,
+            -0.03749767690896988
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9588310122489929,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -21.796159744262695,
+            -11.989958763122559,
+            0.01942317932844162
+          ],
+          [
+            -22.08942985534668,
+            -12.381329536437988,
+            -0.026264237239956856
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.966768205165863,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.1034910678863525,
+            12.64919376373291,
+            -0.008943910710513592
+          ],
+          [
+            1.6195108890533447,
+            12.379063606262207,
+            -0.0272758100181818
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9583185911178589,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -10.978625297546387,
+            -5.847116470336914,
+            0.01183280348777771
+          ],
+          [
+            -11.450456619262695,
+            -5.87954044342041,
+            0.008031011559069157
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.8182588815689087,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -3.8514575958251953,
+            8.523355484008789,
+            -0.026222461834549904
+          ],
+          [
+            -3.4536209106445312,
+            8.084558486938477,
+            0.11430671811103821
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9683161377906799,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            13.514485359191895,
+            15.7060546875,
+            0.042209357023239136
+          ],
+          [
+            12.973833084106445,
+            15.665090560913086,
+            0.0042060380801558495
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9518988132476807,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            26.63831901550293,
+            3.0457122325897217,
+            -0.006928374990820885
+          ],
+          [
+            26.124746322631836,
+            2.935687303543091,
+            0.05183839052915573
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7604691982269287,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            27.215200424194336,
+            -7.887296676635742,
+            0.13148121535778046
+          ],
+          [
+            27.603870391845703,
+            -7.416629314422607,
+            0.02121375873684883
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9605667591094971,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            1.14645516872406,
+            -3.1931464672088623,
+            0.015470282174646854
+          ],
+          [
+            1.031074047088623,
+            -2.672272205352783,
+            -0.0520847886800766
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9611908793449402,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            29.760072708129883,
+            2.6888375282287598,
+            -0.006370311137288809
+          ],
+          [
+            29.56949234008789,
+            3.275299072265625,
+            0.026042185723781586
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.975271999835968,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            21.41658592224121,
+            14.563677787780762,
+            -0.024459464475512505
+          ],
+          [
+            21.871400833129883,
+            14.72970962524414,
+            0.006760722026228905
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.8701065182685852,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            37.519195556640625,
+            -8.33563232421875,
+            0.027855847030878067
+          ],
+          [
+            37.08376693725586,
+            -8.199917793273926,
+            0.03520028665661812
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9670605063438416,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            28.6657772064209,
+            -19.878868103027344,
+            0.024697385728359222
+          ],
+          [
+            28.533376693725586,
+            -19.19145393371582,
+            -0.023882711306214333
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.968235969543457,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            26.45433235168457,
+            -18.375564575195312,
+            -0.04121871665120125
+          ],
+          [
+            27.000186920166016,
+            -18.35631561279297,
+            -0.02642660215497017
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9651681184768677,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -16.7508487701416,
+            16.087812423706055,
+            -0.040581632405519485
+          ],
+          [
+            -16.38831329345703,
+            15.902063369750977,
+            0.024316009134054184
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9683572053909302,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -32.9837646484375,
+            2.6460459232330322,
+            -0.0479046069085598
+          ],
+          [
+            -33.418418884277344,
+            2.5116686820983887,
+            -0.06834254413843155
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9518593549728394,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -10.096182823181152,
+            13.615316390991211,
+            -0.004056895151734352
+          ],
+          [
+            -10.283488273620605,
+            13.252215385437012,
+            -0.02204190380871296
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.8256966471672058,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -25.955120086669922,
+            7.505326747894287,
+            -0.02758566476404667
+          ],
+          [
+            -25.355018615722656,
+            7.652915954589844,
+            0.13080233335494995
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.962567925453186,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -28.43218994140625,
+            5.126550197601318,
+            0.014178588055074215
+          ],
+          [
+            -28.417388916015625,
+            4.599907398223877,
+            -0.007527896203100681
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9439762234687805,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            39.27216339111328,
+            13.4484281539917,
+            0.008511099964380264
+          ],
+          [
+            39.54888153076172,
+            12.897221565246582,
+            0.05509380251169205
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.8601115345954895,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            18.333965301513672,
+            -7.435801029205322,
+            0.008420032449066639
+          ],
+          [
+            18.16619873046875,
+            -7.957424163818359,
+            0.059943005442619324
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9738712906837463,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.365644454956055,
+            12.701199531555176,
+            -0.029444215819239616
+          ],
+          [
+            9.148242950439453,
+            13.170374870300293,
+            -0.0072921328246593475
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9579749703407288,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            34.77753829956055,
+            17.38822364807129,
+            -0.0035224107559770346
+          ],
+          [
+            35.09837341308594,
+            17.704689025878906,
+            0.0041574412025511265
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9699052572250366,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -25.710983276367188,
+            10.633979797363281,
+            -0.035320959985256195
+          ],
+          [
+            -24.925785064697266,
+            10.311182975769043,
+            -0.007786670699715614
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9604325294494629,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -1.1252423524856567,
+            -12.220664978027344,
+            -0.033656343817710876
+          ],
+          [
+            -1.401907205581665,
+            -12.289278984069824,
+            0.017730161547660828
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9766421914100647,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            25.7120418548584,
+            15.529546737670898,
+            -0.04128475487232208
+          ],
+          [
+            26.294296264648438,
+            15.585870742797852,
+            -0.026894908398389816
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9554949402809143,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            19.57819938659668,
+            -1.3645875453948975,
+            -0.0067253727465868
+          ],
+          [
+            20.13741683959961,
+            -1.4584158658981323,
+            0.02705535478889942
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7244992852210999,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            23.72823715209961,
+            -8.201094627380371,
+            0.06530462205410004
+          ],
+          [
+            23.696941375732422,
+            -7.6084465980529785,
+            -0.016478480771183968
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9696065783500671,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            13.137821197509766,
+            -15.192888259887695,
+            0.04349410906434059
+          ],
+          [
+            13.05648422241211,
+            -15.693222045898438,
+            0.006126684136688709
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9558480381965637,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            34.462730407714844,
+            13.529983520507812,
+            0.040882278233766556
+          ],
+          [
+            34.13710403442383,
+            13.165841102600098,
+            -0.02308495156466961
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.954380452632904,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.5247364044189453,
+            -7.549540042877197,
+            -0.02316766418516636
+          ],
+          [
+            2.908578634262085,
+            -6.955315589904785,
+            0.0441841259598732
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7192680239677429,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            33.55271911621094,
+            -8.71557331085205,
+            0.03971896693110466
+          ],
+          [
+            33.71165084838867,
+            -8.232964515686035,
+            0.021374234929680824
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9756256341934204,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -21.27500343322754,
+            17.236509323120117,
+            0.015203820541501045
+          ],
+          [
+            -21.843271255493164,
+            17.403018951416016,
+            -0.006406381260603666
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.7682070732116699,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            13.816140174865723,
+            8.108355522155762,
+            0.02973245084285736
+          ],
+          [
+            13.990056037902832,
+            8.478472709655762,
+            0.13021400570869446
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9622697830200195,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            34.98067092895508,
+            -15.334053039550781,
+            -0.0021571835968643427
+          ],
+          [
+            35.56333923339844,
+            -15.13095474243164,
+            -0.009132172912359238
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9631359577178955,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -22.89181137084961,
+            5.4058098793029785,
+            -0.08256805688142776
+          ],
+          [
+            -22.272586822509766,
+            5.5145368576049805,
+            -0.0005703184870071709
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9710283875465393,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.579827308654785,
+            -15.141179084777832,
+            -0.021410247310996056
+          ],
+          [
+            9.875110626220703,
+            -14.823397636413574,
+            -0.015278286300599575
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9687113761901855,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -14.105469703674316,
+            13.1702241897583,
+            0.014734511263668537
+          ],
+          [
+            -14.487075805664062,
+            12.76163101196289,
+            0.009907742962241173
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9551718831062317,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.35930585861206055,
+            3.0232343673706055,
+            -0.024267088621854782
+          ],
+          [
+            0.7372177839279175,
+            3.6030657291412354,
+            -0.015155945904552937
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9636799097061157,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            17.044254302978516,
+            13.280046463012695,
+            0.005949140526354313
+          ],
+          [
+            16.874441146850586,
+            12.898703575134277,
+            -0.02371201291680336
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9558595418930054,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.7933230996131897,
+            -5.738525390625,
+            0.0463908351957798
+          ],
+          [
+            0.29856303334236145,
+            -5.302069664001465,
+            -0.05782093107700348
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_type": "lane_line",
+        "confidence": 0.9462553262710571,
+        "source": "geometric"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            1.6760419607162476,
+            0.9028793573379517,
+            0.00680248998105526
+          ],
+          [
+            1.189610242843628,
+            1.0669949054718018,
+            0.0300181582570076
           ]
         ]
       }
