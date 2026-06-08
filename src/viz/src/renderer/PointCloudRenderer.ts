@@ -64,15 +64,47 @@ export class PointCloudRenderer {
     this.scene.remove(this.mesh);
   }
 
+  // 4-stop perceptual ramp: dark-blue → cyan → yellow → red
+  // Each entry: [t, r, g, b]
+  private static readonly INTENSITY_STOPS: ReadonlyArray<[number, number, number, number]> = [
+    [0.00, 0.05, 0.05, 0.55],
+    [0.40, 0.00, 0.85, 0.90],
+    [0.70, 1.00, 0.88, 0.00],
+    [1.00, 1.00, 0.08, 0.08],
+  ];
+
   private intensityToColors(intensities: Float32Array): Float32Array {
     const colors = new Float32Array(intensities.length * 3);
-    for (let index = 0; index < intensities.length; index += 1) {
-      const value = intensities[index];
-      colors[index * 3] = value;
-      colors[index * 3 + 1] = value;
-      colors[index * 3 + 2] = value;
+    for (let i = 0; i < intensities.length; i++) {
+      const [r, g, b] = PointCloudRenderer.sampleRamp(
+        Math.max(0, Math.min(1, intensities[i])),
+        PointCloudRenderer.INTENSITY_STOPS,
+      );
+      colors[i * 3]     = r;
+      colors[i * 3 + 1] = g;
+      colors[i * 3 + 2] = b;
     }
     return colors;
+  }
+
+  private static sampleRamp(
+    t: number,
+    stops: ReadonlyArray<[number, number, number, number]>,
+  ): [number, number, number] {
+    for (let i = 1; i < stops.length; i++) {
+      if (t <= stops[i][0]) {
+        const prev = stops[i - 1];
+        const next = stops[i];
+        const a = (t - prev[0]) / (next[0] - prev[0]);
+        return [
+          prev[1] + a * (next[1] - prev[1]),
+          prev[2] + a * (next[2] - prev[2]),
+          prev[3] + a * (next[3] - prev[3]),
+        ];
+      }
+    }
+    const last = stops[stops.length - 1];
+    return [last[1], last[2], last[3]];
   }
 
   private heightToColors(positions: Float32Array): Float32Array {
