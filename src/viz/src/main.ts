@@ -268,11 +268,12 @@ async function loadSceneData(
       return;
     }
 
+    const base = import.meta.env.BASE_URL;
     // Load point cloud for the selected frame/stage, features, and QA report in parallel.
     const [cloud, features, report] = await Promise.all([
       loadFrameStage(frame, stage),
-      loadFeatures('/data/features.geojson'),
-      loadQAReport('/data/qa_report.json'),
+      loadFeatures(`${base}data/features.geojson`),
+      loadQAReport(`${base}data/qa_report.json`),
     ]);
 
     // Point cloud — use pipeline output or fall back to small synthetic demo.
@@ -343,9 +344,8 @@ async function loadSceneData(
 /* ─── BEV image panel ────────────────────────────────────────── */
 
 function bevUrl(frame: FrameSelector): string {
-  // Accumulated view shows frame 0 BEV (all frames share same origin)
   const idx = frame === 'accumulated' ? 0 : frame;
-  return `/data/bev/frame_${idx}_bev.png`;
+  return `${import.meta.env.BASE_URL}data/bev/frame_${idx}_bev.png`;
 }
 
 function updateBEVPanel(frame: FrameSelector, stage: StageSelector): void {

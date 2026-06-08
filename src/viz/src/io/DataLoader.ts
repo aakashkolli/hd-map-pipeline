@@ -66,10 +66,11 @@ export async function loadFrameStage(
   frame: FrameSelector,
   stage: StageSelector,
 ): Promise<PointCloudData | null> {
+  const base = import.meta.env.BASE_URL;
   const url =
     frame === 'accumulated'
-      ? '/data/points.bin'
-      : `/data/frames/frame_${frame}_${stage}.bin`;
+      ? `${base}data/points.bin`
+      : `${base}data/frames/frame_${frame}_${stage}.bin`;
   return loadPointCloudBin(url);
 }
 

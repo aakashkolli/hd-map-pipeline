@@ -4,6 +4,8 @@ A production-oriented LiDAR feature extraction pipeline for autonomous vehicle H
 
 Built to demonstrate fit for day-to-day AV mapping infrastructure work: data pipelines over sensor data, automation algorithms for feature extraction, QA tooling for map validation, and ML integration on spatial datasets.
 
+**Live demo:** after pushing to GitHub, enable Pages (`Settings → Pages → Source: GitHub Actions`). The viewer deploys automatically on every push to `main` and is available at `https://<your-username>.github.io/hd-map-pipeline/` — no server required.
+
 ---
 
 ## Quick Start
@@ -62,7 +64,7 @@ src/
   pipeline/    — Ingest, BEV projection, lane extraction, QA, fusion.
                  Stages communicate through Parquet and GeoJSON files.
   viz/         — Standalone Three.js application. Reads GeoJSON and
-                 Parquet from the filesystem. No Python imports.
+                 binary point cloud files. No Python imports.
 ```
 
 All numeric parameters live in `configs/*.yaml` — no magic numbers in source.
@@ -83,7 +85,7 @@ Loads KITTI `.bin` LiDAR frames, parses GPS/IMU poses as SE3 transforms, applies
 
 ### Stage 3 — BEV Projection
 
-Projects ground-classified points into a top-down intensity image at 10 cm/pixel resolution. Normalization is **per-scan**: each frame divides by its own maximum intensity rather than a global constant. This ensures consistent lane marking detection across different LiDAR sensors and weather conditions (wet pavement attenuates returns differently than dry).
+Projects ground-classified points into a top-down intensity image at 5 cm/pixel resolution. Normalization is **per-scan**: each frame divides by its own maximum intensity rather than a global constant. This ensures consistent lane marking detection across different LiDAR sensors and weather conditions (wet pavement attenuates returns differently than dry).
 
 ### Stage 4 — Feature Extraction
 
@@ -106,25 +108,58 @@ Compares extracted features against ground truth annotations (nuScenes map layer
 
 ## Three.js Viewer
 
-The viewer is modeled after internal AV map QA tooling: dark background, system-ui font, no decorative chrome. It exists to let an engineer inspect extracted features against the point cloud, not to impress a non-technical audience.
+The viewer is modeled after internal AV map QA tooling: dark background, system-ui font, no decorative chrome. It lets an engineer inspect extracted features against the point cloud, switch between individual scan frames (raw / ground / obstacle splits), and compare what the pipeline sees against a top-down LiDAR intensity image.
 
-**Controls:**
+### Frame and Stage Selector
+
+The sidebar **Scene** section selects which point cloud to display:
+
+- **Frame 0–4**: individual KITTI frames transformed to world ENU, ~122K points each
+- **Accumulated**: all frames merged into a single cloud (~610K points)
+
+The **Stage** section (disabled for Accumulated) selects the pipeline split:
+
+- **Raw**: full Velodyne HDL-64E scan (road surface + vehicles + buildings)
+- **Ground**: RANSAC inliers — road surface and lane markings
+- **Obstacles**: non-ground returns — vehicles, pedestrians, vegetation
+
+### Keyboard Shortcuts
 
 | Key | Action |
 |---|---|
 | `1` | Toggle point cloud visibility |
 | `2` | Toggle feature line overlay |
 | `3` | Toggle QA annotation overlay |
-| `I` | Point cloud color mode: intensity (grayscale) |
-| `H` | Point cloud color mode: height (jet colormap) |
-| `V` | Toggle perspective / BEV (top-down orthographic) |
+| `I` | Point cloud color: intensity (turbo colormap) |
+| `H` | Point cloud color: height (turbo colormap) |
+| `V` | Toggle perspective / BEV top-down orthographic |
+| `B` | Toggle BEV intensity image panel (80 m × 80 m, 5 cm/px) |
+| `R` | Reset camera to scene center |
 | Click | Select feature line — shows type, confidence, source, vertex count in sidebar |
 | Drag | Orbit (perspective) / pan (BEV) |
 | Scroll | Zoom |
 
-**Performance:** 500K points at **60.66 FPS** in GPU-backed Chrome via `THREE.BufferGeometry` with `Float32Array` typed arrays. Color mode switches update the vertex color buffer attribute in place — no geometry rebuild required (`< 50 ms`).
+### BEV Image Panel
+
+Press `B` or click **BEV image** in the sidebar to open a floating 300×300 px panel showing the Bird's Eye View intensity projection for the selected frame. The panel updates automatically when you switch frames. The image is the direct input to the lane extraction stage — bright horizontal streaks are lane markings.
+
+### Performance
+
+500K points at **60.66 FPS** in GPU-backed Chrome via `THREE.BufferGeometry` with `Float32Array` typed arrays. Color mode switches update the vertex color buffer attribute in place — no geometry rebuild required (`< 1 ms` per switch).
 
 **QA overlays:** False positive features render in amber (`#f59e0b`), missed GT features in red (`#ef4444`), matching the color convention used in production map QA dashboards.
+
+---
+
+## GitHub Pages Deployment
+
+The viewer builds to `docs/` and deploys automatically on every push to `main` via GitHub Actions (`.github/workflows/deploy.yml`). To enable:
+
+1. Push to GitHub
+2. Go to `Settings → Pages → Source: GitHub Actions`
+3. The next push to `main` triggers a deploy
+
+The deployed viewer includes all pre-computed pipeline outputs (point cloud frames, BEV images, extracted features, QA report). The **Run Pipeline** button requires a running API server and will show an error message on the static Pages deployment — this is expected.
 
 ---
 
@@ -213,4 +248,6 @@ tests/
 - **Rain / wet pavement:** Intensity-percentile thresholding adapts to overall scan brightness but cannot distinguish specular water returns from lane markings. A learned threshold or multi-return fusion is needed for adverse weather.
 - **BEV annotation rasterization:** nuScenes training masks rasterize annotation polygon vertices rather than filling thick lane polygons. This underrepresents wide road markings at training time.
 - **U-Net evaluation:** Cross-dataset smoke evaluation is synthetic unless real KITTI data and trained model weights are present.
+- **OXTS stub data:** The included KITTI 0005 frames use constant GPS coordinates (lat=49.0, lon=8.0) — the vehicle does not move between frames in world ENU. Individual frame views show real sensor geometry; the Accumulated view shows all frames co-located at the origin.
+- **Run Pipeline on Pages:** The static GitHub Pages deployment cannot reach the Python API server. Clicking "Run Pipeline" will report "could not reach API server" — this is expected. The pre-computed pipeline outputs are served as static files.
 - **Viewer benchmark:** The 500K-point scene uses a synthetic world-frame cloud. Real KITTI scene FPS should be re-measured after loading full survey data — memory layout differs between synthetic grid and real scan patterns.
