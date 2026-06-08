@@ -8,6 +8,10 @@ import { loadFeatures, loadQAReport, loadFrameStage, buildQAAnnotations, trigger
 import type { FrameSelector, StageSelector } from './io/DataLoader.js';
 import rawConfig from '../../../configs/viz.json';
 
+// Leaflet is loaded as a global via script tag in index.html
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const L: any;
+
 /* ─── Config ─────────────────────────────────────────────────── */
 
 type ViewerConfig = {
@@ -119,6 +123,9 @@ const sidebar = new Sidebar({
     activeStage = stage;
     loadSceneData(frame, stage);
   },
+  onMapToggle() {
+    toggleMapPanel();
+  },
   onRunPipeline() {
     sidebar.setPipelineStatus('running');
     triggerPipeline().then((initialStatus) => {
@@ -198,6 +205,8 @@ window.addEventListener('keydown', (event) => {
     }
     case 'r':
     case 'R': cameraCtrl.resetToLastRecenter(); break;
+    case 'm':
+    case 'M': toggleMapPanel(); break;
   }
 });
 
@@ -332,6 +341,43 @@ async function loadSceneData(
     setLoadingVisible(false);
   }
 }
+
+/* ─── Map context panel ──────────────────────────────────────── */
+
+// KITTI 2011_09_26 sequences were collected in Karlsruhe, Germany.
+// Approximate city-centre coordinates used as map anchor.
+const KITTI_LAT = 49.011;
+const KITTI_LNG = 8.404;
+
+let leafletMap: ReturnType<typeof L.map> | null = null;
+
+function toggleMapPanel(): void {
+  const panel = document.getElementById('map-panel')!;
+  const isVisible = panel.classList.toggle('visible');
+  if (isVisible && !leafletMap) {
+    leafletMap = L.map('map-leaflet', { zoomControl: true }).setView([KITTI_LAT, KITTI_LNG], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(leafletMap);
+    // Mark approximate scan origin
+    L.circleMarker([KITTI_LAT, KITTI_LNG], {
+      radius: 8,
+      color: '#58a6ff',
+      fillColor: '#58a6ff',
+      fillOpacity: 0.6,
+      weight: 2,
+    }).addTo(leafletMap).bindPopup('KITTI drive 0005 · approx. origin');
+  }
+  // Leaflet needs a size-invalidate after becoming visible
+  if (isVisible && leafletMap) {
+    setTimeout(() => leafletMap!.invalidateSize(), 50);
+  }
+}
+
+document.getElementById('map-close')!.addEventListener('click', () => {
+  document.getElementById('map-panel')!.classList.remove('visible');
+});
 
 function flashScene(): void {
   const el = document.getElementById('scene-flash')!;

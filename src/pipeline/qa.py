@@ -71,17 +71,19 @@ def compute_qa_metrics(
             f"{cfg.max_gt_match_distance}."
         )
     if not ground_truth:
-        false_positive_rate = 0.0 if not predicted else 1.0
+        # No external GT available — metrics are undefined, not zero.
+        # Do not flag predicted features as false positives; that label
+        # requires a GT to compare against.
         return QAReport(
             scene_id=scene_id,
-            completeness=1.0,
+            completeness=0.0,
             positional_accuracy_p50=0.0,
             positional_accuracy_p95=0.0,
-            false_positive_rate=false_positive_rate,
-            classification_accuracy=1.0,
+            false_positive_rate=0.0,
+            classification_accuracy=0.0,
             per_class_completeness={},
             missed_gt_features=[],
-            false_positive_ids=_feature_ids(predicted),
+            false_positive_ids=[],
         )
 
     matches: list[tuple[int, int, float]] = []

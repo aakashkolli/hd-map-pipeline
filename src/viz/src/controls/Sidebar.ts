@@ -18,6 +18,7 @@ type SidebarCallbacks = {
   onResetCamera: () => void;
   onRunPipeline: () => void;
   onSceneChange: (frame: FrameSelector, stage: StageSelector) => void;
+  onMapToggle: () => void;
 };
 
 const LAYER_CONFIG: Array<{ key: LayerKey; label: string; color: string; shortcut: string }> = [
@@ -107,6 +108,10 @@ export class Sidebar {
 
       <div class="sb-section">
         <div class="sb-section-label">View</div>
+        <button class="sb-view-btn" id="map-toggle" style="margin-bottom:4px">
+          <span>Map context</span>
+          <span class="sb-key">[M]</span>
+        </button>
         <button class="sb-view-btn" id="view-toggle">
           <span id="view-label">Perspective</span>
           <span class="sb-key">[V]</span>
@@ -153,6 +158,10 @@ export class Sidebar {
     this.colorBtns.height = heightBtn;
     intensityBtn.addEventListener('click', () => this.setColorMode('intensity'));
     heightBtn.addEventListener('click', () => this.setColorMode('height'));
+
+    document.getElementById('map-toggle')!.addEventListener('click', () => {
+      this.callbacks.onMapToggle();
+    });
 
     document.getElementById('view-toggle')!.addEventListener('click', () => {
       this.callbacks.onViewToggle();
