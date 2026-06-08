@@ -5,7 +5,7 @@
     "cameraFovDegrees": 60,
     "nearClipMeters": 0.1,
     "farClipMeters": 1000,
-    "cameraPositionWorld": [20, -30, 20],
+    "cameraPositionWorld": [0, -100, 80],
     "cameraLookAtWorld": [0, 0, 0],
     "antialias": true,
     "demoFeatureLineWorld": [[0, 0, 0], [20, 0, 0]],

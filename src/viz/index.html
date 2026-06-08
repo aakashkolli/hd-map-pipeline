@@ -5,20 +5,307 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HD Map Pipeline Viewer</title>
     <style>
-      html,
-      body {
+      /* ─── Reset ─────────────────────────────────────────────── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      /* ─── Root layout ───────────────────────────────────────── */
+      html, body {
         width: 100%;
         height: 100%;
-        margin: 0;
         overflow: hidden;
         background: #0d1117;
+        font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI',
+                     system-ui, sans-serif;
+        font-size: 12px;
+        color: #e6edf3;
       }
-      canvas {
+
+      /* Monospace reserved for numbers, coords, keyboard hints */
+      .mono {
+        font-family: ui-monospace, 'SFMono-Regular', monospace;
+      }
+
+      body {
+        display: flex;
+        flex-direction: row;
+      }
+
+      /* ─── Sidebar ───────────────────────────────────────────── */
+      #sidebar {
+        width: 240px;
+        min-width: 240px;
+        height: 100%;
+        background: #161b22;
+        border-right: 1px solid #21262d;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: #30363d #161b22;
+        flex-shrink: 0;
+        user-select: none;
+      }
+
+      #sidebar::-webkit-scrollbar { width: 4px; }
+      #sidebar::-webkit-scrollbar-track { background: #161b22; }
+      #sidebar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 2px; }
+
+      .sb-header {
+        padding: 14px 16px 12px;
+        border-bottom: 1px solid #21262d;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .sb-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #58a6ff;
+      }
+
+      /* ─── Sections ──────────────────────────────────────────── */
+      .sb-section {
+        padding: 12px 16px;
+        border-bottom: 1px solid #21262d;
+        flex-shrink: 0;
+      }
+
+      .sb-section-grow {
+        flex: 1;
+        min-height: 60px;
+      }
+
+      .sb-section-label {
+        font-size: 10px;
+        letter-spacing: 0.04em;
+        color: #8b949e;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      /* ─── Layer rows ────────────────────────────────────────── */
+      .sb-layer-row {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 0;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background 0.1s;
+      }
+
+      .sb-layer-row:hover { background: #1c2128; margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
+
+      .sb-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .sb-layer-name {
+        flex: 1;
+        font-size: 11px;
+        color: #c9d1d9;
+      }
+
+      .sb-key {
+        font-size: 10px;
+        color: #6e7681;
+        flex-shrink: 0;
+        font-family: ui-monospace, 'SFMono-Regular', monospace;
+      }
+
+      /* ─── Toggle pill ───────────────────────────────────────── */
+      .sb-toggle {
+        width: 24px;
+        height: 13px;
+        border-radius: 7px;
+        flex-shrink: 0;
+        position: relative;
+        transition: background 0.15s;
+      }
+
+      .sb-toggle::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #0d1117;
+        transition: left 0.15s;
+      }
+
+      .sb-toggle.on  { background: #238636; }
+      .sb-toggle.off { background: #30363d; }
+
+      .sb-toggle.on::after  { left: 13px; }
+      .sb-toggle.off::after { left: 2px; }
+
+      /* ─── Color mode buttons ─────────────────────────────────── */
+      .sb-btn-row {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 6px;
+      }
+
+      .sb-mode-btn {
+        flex: 1;
+        padding: 5px 0;
+        background: #21262d;
+        border: 1px solid #30363d;
+        color: #c9d1d9;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background 0.1s, color 0.1s, border-color 0.1s;
+      }
+
+      .sb-mode-btn:hover { background: #1c2128; color: #c9d1d9; }
+
+      .sb-mode-btn.active {
+        background: #0d419d22;
+        border-color: #58a6ff;
+        color: #58a6ff;
+      }
+
+      .sb-key-hint {
+        font-size: 10px;
+        color: #6e7681;
+        font-family: ui-monospace, 'SFMono-Regular', monospace;
+      }
+
+      /* ─── View toggle button ────────────────────────────────── */
+      .sb-view-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 8px;
+        background: #21262d;
+        border: 1px solid #30363d;
+        color: #c9d1d9;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background 0.1s, border-color 0.1s;
+      }
+
+      .sb-view-btn:hover {
+        background: #1c2128;
+        border-color: #58a6ff;
+        color: #58a6ff;
+      }
+
+      /* ─── QA metrics ────────────────────────────────────────── */
+      .sb-metric-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 3px 0;
+        gap: 4px;
+      }
+
+      .sb-metric-label {
+        color: #8b949e;
+        font-size: 11px;
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+
+      .sb-metric-value {
+        color: #e6edf3;
+        font-size: 11px;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-family: ui-monospace, 'SFMono-Regular', monospace;
+      }
+
+      .sb-metric-value.good { color: #3fb950; }
+      .sb-metric-value.warn { color: #f59e0b; }
+
+      .sb-metric-subhead {
+        font-size: 10px;
+        color: #6e7681;
+        margin-top: 8px;
+        margin-bottom: 2px;
+      }
+
+      .sb-class-label { font-style: italic; }
+
+      /* ─── Muted / placeholder ───────────────────────────────── */
+      .sb-muted {
+        color: #6e7681;
+        font-size: 11px;
+        font-style: italic;
+      }
+
+      /* ─── Footer ─────────────────────────────────────────────── */
+      .sb-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        border-top: 1px solid #21262d;
+        flex-shrink: 0;
+        gap: 8px;
+      }
+
+      .sb-stat {
+        font-size: 12px;
+        color: #58a6ff;
+        font-weight: 600;
+        font-family: ui-monospace, 'SFMono-Regular', monospace;
+      }
+
+      .sb-footer-label {
+        font-size: 11px;
+        color: #8b949e;
+      }
+
+      .sb-fps-label { margin-left: auto; }
+
+      /* ─── Canvas container ──────────────────────────────────── */
+      #canvas-container {
+        flex: 1;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+
+      #canvas-container canvas {
         display: block;
       }
+
+      /* ─── Benchmark overlay ─────────────────────────────────── */
+      #viewer-metrics {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        font-family: ui-monospace, monospace;
+        font-size: 9px;
+        color: #484f58;
+        pointer-events: none;
+        display: none;
+      }
+
+      /* ─── Selection highlight ring ──────────────────────────── */
+      .selected-feature-highlight { /* applied via material linewidth */ }
     </style>
   </head>
   <body>
+    <div id="sidebar"></div>
+    <div id="canvas-container"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

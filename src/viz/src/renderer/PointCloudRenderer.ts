@@ -50,6 +50,14 @@ export class PointCloudRenderer {
     colorAttribute.needsUpdate = true;
   }
 
+  setVisible(visible: boolean): void {
+    this.mesh.visible = visible;
+  }
+
+  get visible(): boolean {
+    return this.mesh.visible;
+  }
+
   dispose(): void {
     this.geometry.dispose();
     this.material.dispose();
