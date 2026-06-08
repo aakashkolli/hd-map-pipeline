@@ -450,45 +450,41 @@
         border-radius: 3px;
         border: 1px solid #21262d;
       }
-      /* ─── Map overlay panel ─────────────────────────────────── */
-      #map-panel {
+      /* ─── BEV image panel ───────────────────────────────────── */
+      #bev-panel {
         position: absolute;
         top: 12px;
         right: 12px;
-        width: 340px;
-        height: 260px;
+        width: 300px;
         border-radius: 6px;
         border: 1px solid #30363d;
         overflow: hidden;
         z-index: 30;
         box-shadow: 0 4px 24px #00000088;
+        background: #0d1117;
         display: none;
       }
 
-      #map-panel.visible { display: block; }
+      #bev-panel.visible { display: block; }
 
-      #map-panel-header {
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 28px;
-        background: #161b22ee;
-        border-bottom: 1px solid #30363d;
+      #bev-panel-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 10px;
-        z-index: 10;
-        pointer-events: none;
+        height: 28px;
+        background: #161b22;
+        border-bottom: 1px solid #30363d;
+        flex-shrink: 0;
       }
 
-      #map-panel-header span {
+      #bev-panel-header span {
         font-size: 10px;
         color: #8b949e;
         font-family: ui-monospace, monospace;
       }
 
-      #map-close {
-        pointer-events: all;
+      #bev-close {
         background: none;
         border: none;
         color: #6e7681;
@@ -498,15 +494,23 @@
         line-height: 1;
       }
 
-      #map-close:hover { color: #c9d1d9; }
+      #bev-close:hover { color: #c9d1d9; }
 
-      #map-leaflet {
+      #bev-img {
         width: 100%;
-        height: 100%;
-        padding-top: 28px;
+        display: block;
+        image-rendering: pixelated;
+      }
+
+      #bev-caption {
+        padding: 5px 10px;
+        font-size: 9px;
+        color: #484f58;
+        font-family: ui-monospace, monospace;
+        background: #161b22;
+        border-top: 1px solid #21262d;
       }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   </head>
   <body>
     <div id="sidebar"></div>
@@ -518,16 +522,16 @@
       </div>
       <div id="scene-meta" hidden class="scene-meta-chip"></div>
 
-      <!-- Map context panel — shows real-world collection area -->
-      <div id="map-panel">
-        <div id="map-panel-header">
-          <span>KITTI collection area · Karlsruhe, Germany</span>
-          <button id="map-close">✕</button>
+      <!-- BEV intensity image panel -->
+      <div id="bev-panel">
+        <div id="bev-panel-header">
+          <span id="bev-label">BEV · Frame 0 · ground</span>
+          <button id="bev-close">✕</button>
         </div>
-        <div id="map-leaflet"></div>
+        <img id="bev-img" src="" alt="BEV intensity projection" />
+        <div id="bev-caption">top-down LiDAR intensity · 80 m × 80 m · 5 cm/px · turbo colormap</div>
       </div>
     </div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

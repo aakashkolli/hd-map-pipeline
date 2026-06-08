@@ -20,10 +20,12 @@ if str(REPO_ROOT) not in sys.path:
 
 from src.data.types import LaneBoundaryFeature, LaneType
 from src.data.kitti import load_lidar_frame, parse_calibration, parse_oxts_pose
+from src.pipeline.bev import project_to_bev, BEVConfig
 from src.pipeline.extract import ExtractionConfig, extract_lane_boundaries
 from src.pipeline.ingest import accumulate_kitti_frames, _origin_from_oxts
 from src.pipeline.qa import QAConfig, compute_qa_metrics
 import pandas as pd
+import zlib
 
 from src.filters.ground_plane import ransac_ground_plane, RansacConfig
 from src.filters.voxel import voxel_downsample
@@ -258,6 +260,70 @@ def _generate_kitti_frames(config: dict[str, Any], output: Path) -> None:
             f"[kitti frames] frame {frame_idx}: {len(raw):,} pts "
             f"({gnd_mask.sum():,} ground, {(~gnd_mask).sum():,} obstacles)"
         )
+
+    _generate_bev_images(output, n_frames)
+
+
+def _generate_bev_images(output: Path, n_frames: int = 5) -> None:
+    """Render BEV intensity PNGs from ground-layer point clouds.
+
+    Applies the same turbo colormap used by the 3D viewer so colours are
+    consistent across the two views.  Background pixels (no return) are
+    rendered as near-black so the road surface stands out.
+
+    Output: data/outputs/bev/frame_{N}_bev.png  (1600×1600, 5 cm/px)
+    """
+    _STOPS = np.array([
+        [0.00, 0.05, 0.05, 0.55],
+        [0.40, 0.00, 0.85, 0.90],
+        [0.70, 1.00, 0.88, 0.00],
+        [1.00, 1.00, 0.08, 0.08],
+    ], dtype=np.float32)
+
+    def _turbo(img: np.ndarray) -> np.ndarray:
+        flat = img.ravel()
+        rgb = np.zeros((len(flat), 3), dtype=np.float32)
+        for i in range(1, len(_STOPS)):
+            p, n_ = _STOPS[i - 1], _STOPS[i]
+            mask = (flat >= p[0]) & (flat <= n_[0])
+            if not mask.any():
+                continue
+            t = (flat[mask] - p[0]) / (n_[0] - p[0])
+            for c in range(3):
+                rgb[mask, c] = p[c + 1] + t * (n_[c + 1] - p[c + 1])
+        rgb[flat == 0] = [0.04, 0.04, 0.12]
+        return (rgb.reshape(*img.shape, 3) * 255).clip(0, 255).astype(np.uint8)
+
+    def _write_png(path: Path, rgb: np.ndarray) -> None:
+        h, w = rgb.shape[:2]
+        raw = b"".join(b"\x00" + rgb[y].tobytes() for y in range(h))
+        def _chunk(tag: bytes, data: bytes) -> bytes:
+            c = struct.pack(">I", len(data)) + tag + data
+            return c + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
+        ihdr = struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0)
+        with path.open("wb") as fh:
+            fh.write(b"\x89PNG\r\n\x1a\n")
+            fh.write(_chunk(b"IHDR", ihdr))
+            fh.write(_chunk(b"IDAT", zlib.compress(raw, 6)))
+            fh.write(_chunk(b"IEND", b""))
+
+    bev_dir = output / "bev"
+    bev_dir.mkdir(parents=True, exist_ok=True)
+    cfg = BEVConfig(resolution=0.05, extent=40.0)
+
+    for frame_idx in range(n_frames):
+        gnd_path = output / "frames" / f"frame_{frame_idx}_ground.bin"
+        with gnd_path.open("rb") as fh:
+            data = fh.read()
+        n_pts = struct.unpack_from("<I", data)[0]
+        xyz = np.frombuffer(data, dtype=np.float32, count=n_pts * 3, offset=4).reshape(n_pts, 3)
+        intensities = np.frombuffer(data, dtype=np.float32, count=n_pts, offset=4 + n_pts * 12)
+        pts = np.column_stack([xyz, intensities])
+
+        bev = project_to_bev(pts, cfg)
+        out_path = bev_dir / f"frame_{frame_idx}_bev.png"
+        _write_png(out_path, _turbo(bev.image))
+        print(f"[bev]    frame {frame_idx}: {out_path} ({out_path.stat().st_size // 1024}KB)")
 
 
 def _generate_realistic_frames(output: Path, n_frames: int = 5) -> None:

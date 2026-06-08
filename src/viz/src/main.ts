@@ -8,9 +8,6 @@ import { loadFeatures, loadQAReport, loadFrameStage, buildQAAnnotations, trigger
 import type { FrameSelector, StageSelector } from './io/DataLoader.js';
 import rawConfig from '../../../configs/viz.json';
 
-// Leaflet is loaded as a global via script tag in index.html
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const L: any;
 
 /* ─── Config ─────────────────────────────────────────────────── */
 
@@ -122,9 +119,10 @@ const sidebar = new Sidebar({
     activeFrame = frame;
     activeStage = stage;
     loadSceneData(frame, stage);
+    updateBEVPanel(frame, stage);
   },
-  onMapToggle() {
-    toggleMapPanel();
+  onBEVToggle() {
+    toggleBEVPanel();
   },
   onRunPipeline() {
     sidebar.setPipelineStatus('running');
@@ -205,8 +203,8 @@ window.addEventListener('keydown', (event) => {
     }
     case 'r':
     case 'R': cameraCtrl.resetToLastRecenter(); break;
-    case 'm':
-    case 'M': toggleMapPanel(); break;
+    case 'b':
+    case 'B': toggleBEVPanel(); break;
   }
 });
 
@@ -342,41 +340,31 @@ async function loadSceneData(
   }
 }
 
-/* ─── Map context panel ──────────────────────────────────────── */
+/* ─── BEV image panel ────────────────────────────────────────── */
 
-// KITTI 2011_09_26 sequences were collected in Karlsruhe, Germany.
-// Approximate city-centre coordinates used as map anchor.
-const KITTI_LAT = 49.011;
-const KITTI_LNG = 8.404;
-
-let leafletMap: ReturnType<typeof L.map> | null = null;
-
-function toggleMapPanel(): void {
-  const panel = document.getElementById('map-panel')!;
-  const isVisible = panel.classList.toggle('visible');
-  if (isVisible && !leafletMap) {
-    leafletMap = L.map('map-leaflet', { zoomControl: true }).setView([KITTI_LAT, KITTI_LNG], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
-    }).addTo(leafletMap);
-    // Mark approximate scan origin
-    L.circleMarker([KITTI_LAT, KITTI_LNG], {
-      radius: 8,
-      color: '#58a6ff',
-      fillColor: '#58a6ff',
-      fillOpacity: 0.6,
-      weight: 2,
-    }).addTo(leafletMap).bindPopup('KITTI drive 0005 · approx. origin');
-  }
-  // Leaflet needs a size-invalidate after becoming visible
-  if (isVisible && leafletMap) {
-    setTimeout(() => leafletMap!.invalidateSize(), 50);
-  }
+function bevUrl(frame: FrameSelector): string {
+  // Accumulated view shows frame 0 BEV (all frames share same origin)
+  const idx = frame === 'accumulated' ? 0 : frame;
+  return `/data/bev/frame_${idx}_bev.png`;
 }
 
-document.getElementById('map-close')!.addEventListener('click', () => {
-  document.getElementById('map-panel')!.classList.remove('visible');
+function updateBEVPanel(frame: FrameSelector, stage: StageSelector): void {
+  const img = document.getElementById('bev-img') as HTMLImageElement;
+  const label = document.getElementById('bev-label')!;
+  const frameStr = frame === 'accumulated' ? 'Accumulated' : `Frame ${frame}`;
+  img.src = bevUrl(frame);
+  label.textContent = `BEV · ${frameStr} · ground layer`;
+  // stage only affects the 3D view — BEV is always ground projection
+  void stage;
+}
+
+function toggleBEVPanel(): void {
+  const panel = document.getElementById('bev-panel')!;
+  panel.classList.toggle('visible');
+}
+
+document.getElementById('bev-close')!.addEventListener('click', () => {
+  document.getElementById('bev-panel')!.classList.remove('visible');
 });
 
 function flashScene(): void {
@@ -387,6 +375,7 @@ function flashScene(): void {
 
 // Default to Frame 0 raw on initial load; falls back to accumulated points.bin if not found.
 loadSceneData(0, 'raw');
+updateBEVPanel(0, 'raw');
 
 /* ─── Benchmark metrics ──────────────────────────────────────── */
 
