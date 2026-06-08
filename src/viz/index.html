@@ -393,6 +393,49 @@
         font-family: ui-monospace, 'SFMono-Regular', monospace;
       }
 
+      /* ─── Scene / Stage selector buttons ──────────────────── */
+      .sb-btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+      }
+
+      .sb-scene-btn,
+      .sb-stage-btn {
+        flex: 1 1 auto;
+        min-width: 48px;
+        padding: 4px 6px;
+        background: #21262d;
+        border: 1px solid #30363d;
+        color: #8b949e;
+        font-family: inherit;
+        font-size: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background 0.1s, color 0.1s, border-color 0.1s;
+        white-space: nowrap;
+      }
+
+      .sb-scene-btn:hover:not(:disabled),
+      .sb-stage-btn:hover:not(:disabled) {
+        background: #1c2128;
+        color: #c9d1d9;
+        border-color: #484f58;
+      }
+
+      .sb-scene-btn.active,
+      .sb-stage-btn.active {
+        background: #0d419d22;
+        border-color: #58a6ff;
+        color: #58a6ff;
+      }
+
+      .sb-stage-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
       /* ─── Scene metadata chip ───────────────────────────────── */
       .scene-meta-chip {
         position: absolute;

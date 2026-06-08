@@ -4,7 +4,8 @@ import { FeatureRenderer } from './renderer/FeatureRenderer.js';
 import { QAAnnotationRenderer } from './renderer/QAAnnotationRenderer.js';
 import { CameraController } from './controls/CameraController.js';
 import { Sidebar } from './controls/Sidebar.js';
-import { loadFeatures, loadQAReport, loadPointCloudBin, buildQAAnnotations, triggerPipeline, pollPipelineStatus } from './io/DataLoader.js';
+import { loadFeatures, loadQAReport, loadFrameStage, buildQAAnnotations, triggerPipeline, pollPipelineStatus } from './io/DataLoader.js';
+import type { FrameSelector, StageSelector } from './io/DataLoader.js';
 import rawConfig from '../../../configs/viz.json';
 
 /* ─── Config ─────────────────────────────────────────────────── */
@@ -89,6 +90,10 @@ let currentPositions: Float32Array<any> = new Float32Array(0);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let currentIntensities: Float32Array<any> = new Float32Array(0);
 
+// Active scene selection (frame + stage)
+let activeFrame: FrameSelector = 0;
+let activeStage: StageSelector = 'raw';
+
 const sidebar = new Sidebar({
   onLayerToggle(layer, enabled) {
     switch (layer) {
@@ -109,6 +114,11 @@ const sidebar = new Sidebar({
   onResetCamera() {
     cameraCtrl.resetToLastRecenter();
   },
+  onSceneChange(frame: FrameSelector, stage: StageSelector) {
+    activeFrame = frame;
+    activeStage = stage;
+    loadSceneData(frame, stage);
+  },
   onRunPipeline() {
     sidebar.setPipelineStatus('running');
     triggerPipeline().then((initialStatus) => {
@@ -118,7 +128,7 @@ const sidebar = new Sidebar({
       }
       pollPipelineStatus(
         async () => {
-          await loadSceneData();
+          await loadSceneData(activeFrame, activeStage);
           flashScene();
           sidebar.setPipelineStatus('done');
         },
@@ -233,7 +243,10 @@ function setLoadingVisible(visible: boolean): void {
   el.hidden = !visible;
 }
 
-async function loadSceneData(): Promise<void> {
+async function loadSceneData(
+  frame: FrameSelector = activeFrame,
+  stage: StageSelector = activeStage,
+): Promise<void> {
   setLoadingVisible(true);
   try {
     // Benchmark mode: always use the full synthetic cloud, skip data/ fetch.
@@ -248,9 +261,9 @@ async function loadSceneData(): Promise<void> {
       return;
     }
 
-    // Parallel-load everything the pipeline writes to data/outputs/.
+    // Load point cloud for the selected frame/stage, features, and QA report in parallel.
     const [cloud, features, report] = await Promise.all([
-      loadPointCloudBin('/data/points.bin'),
+      loadFrameStage(frame, stage),
       loadFeatures('/data/features.geojson'),
       loadQAReport('/data/qa_report.json'),
     ]);
@@ -262,10 +275,30 @@ async function loadSceneData(): Promise<void> {
       pointCloudRenderer.load(cloud.positions, cloud.intensities);
       sidebar.updatePointCount(cloud.positions.length / 3);
       cameraCtrl.recenterOn(...cloud.centroid, cloud.extent);
+      const frameLabel = frame === 'accumulated' ? 'Accumulated' : `Frame ${frame}`;
+      const stageLabel = frame === 'accumulated' ? '' : ` · ${stage}`;
       sidebar.setSceneMeta(
         cloud.positions.length / 3,
         features ? features.features.length : 0,
+        `${frameLabel}${stageLabel}`,
       );
+    } else if (frame !== 'accumulated') {
+      // Frame file not found — try accumulated fallback before synthetic demo.
+      const accCloud = await loadFrameStage('accumulated', 'raw');
+      if (accCloud) {
+        currentPositions = accCloud.positions;
+        currentIntensities = accCloud.intensities;
+        pointCloudRenderer.load(accCloud.positions, accCloud.intensities);
+        sidebar.updatePointCount(accCloud.positions.length / 3);
+        cameraCtrl.recenterOn(...accCloud.centroid, accCloud.extent);
+        sidebar.setSceneMeta(accCloud.positions.length / 3, features ? features.features.length : 0, 'Accumulated (fallback)');
+      } else {
+        const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.demoPointCount);
+        currentPositions = positions;
+        currentIntensities = intensities;
+        pointCloudRenderer.load(positions, intensities);
+        sidebar.updatePointCount(viewerConfig.demoPointCount);
+      }
     } else {
       const { positions, intensities } = generateSyntheticPointCloud(viewerConfig.demoPointCount);
       currentPositions = positions;
@@ -306,7 +339,8 @@ function flashScene(): void {
   setTimeout(() => el.classList.remove('active'), 120);
 }
 
-loadSceneData();
+// Default to Frame 0 raw on initial load; falls back to accumulated points.bin if not found.
+loadSceneData(0, 'raw');
 
 /* ─── Benchmark metrics ──────────────────────────────────────── */
 

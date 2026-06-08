@@ -163,6 +163,8 @@ def _run_full_kitti(config: dict[str, Any], output: Path) -> None:
     print(f"[done]   wrote {output / 'points.bin'} ({len(points_4):,} pts), "
           f"{output / 'features.geojson'} ({len(features)} features)")
 
+    _generate_realistic_frames(output, n_frames)
+
 
 def _run_full_smoke(config: dict[str, Any], output: Path) -> None:
     points = _synthetic_lane_points()
@@ -197,6 +199,103 @@ def _run_full_smoke(config: dict[str, Any], output: Path) -> None:
     print(f"Wrote {output / 'features.geojson'}")
     print(f"Wrote {output / 'points.bin'}")
     print(f"Wrote {output / 'qa_report.json'}")
+
+    _generate_realistic_frames(output)
+
+
+def _generate_realistic_frames(output: Path, n_frames: int = 5) -> None:
+    """Generate per-frame binary point clouds with realistic Velodyne HDL-64E geometry.
+
+    Scene: flat road (z=0), building walls at |y|=10 m, lane markings at y=±1.5 m
+    with high reflectance.  Vehicle advances 10 m per frame along world-ENU x-axis;
+    LiDAR is at height z=1.73 m.
+
+    Writes (world ENU, x=east, y=north, z=up):
+        frames/frame_{N}_raw.bin       – all scan returns
+        frames/frame_{N}_ground.bin    – returns with z < 0.15 m
+        frames/frame_{N}_obstacles.bin – returns with z >= 0.15 m
+    """
+    frames_dir = output / "frames"
+    frames_dir.mkdir(parents=True, exist_ok=True)
+
+    rng = np.random.default_rng(42)
+
+    # HDL-64E: 64 rings from -24.8° to +2.0°, 1800 azimuth steps (0.2° resolution)
+    elevations = np.linspace(np.radians(-24.8), np.radians(2.0), 64, dtype=np.float32)
+    azimuths = np.linspace(0.0, 2.0 * np.pi, 1800, endpoint=False, dtype=np.float32)
+
+    cos_el = np.cos(elevations)[:, np.newaxis]  # (64, 1)
+    sin_el = np.sin(elevations)[:, np.newaxis]  # (64, 1)
+    cos_az = np.cos(azimuths)[np.newaxis, :]    # (1, 1800)
+    sin_az = np.sin(azimuths)[np.newaxis, :]    # (1, 1800)
+
+    dx = (cos_el * cos_az).astype(np.float32)           # (64, 1800)
+    dy = (cos_el * sin_az).astype(np.float32)           # (64, 1800)
+    dz = np.broadcast_to(sin_el, (64, 1800)).copy().astype(np.float32)  # (64, 1800)
+
+    lidar_z = 1.73
+    far_clip = 60.0
+
+    for frame_idx in range(n_frames):
+        origin_x = float(frame_idx) * 10.0
+
+        t = np.full((64, 1800), far_clip, dtype=np.float32)
+
+        # Ground plane z=0: t = -lidar_z / dz (valid when dz < 0)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            t_gnd = np.where(dz < -1e-6, -lidar_z / dz, far_clip)
+        t = np.where((t_gnd > 0.1) & (t_gnd < far_clip), np.minimum(t, t_gnd), t)
+
+        # Wall y=+10 m
+        with np.errstate(divide="ignore", invalid="ignore"):
+            t_wp = np.where(dy > 1e-6, 10.0 / dy, far_clip)
+        t = np.where((t_wp > 0.1) & (t_wp < far_clip), np.minimum(t, t_wp), t)
+
+        # Wall y=-10 m
+        with np.errstate(divide="ignore", invalid="ignore"):
+            t_wn = np.where(dy < -1e-6, -10.0 / dy, far_clip)
+        t = np.where((t_wn > 0.1) & (t_wn < far_clip), np.minimum(t, t_wn), t)
+
+        hit_x = (origin_x + t * dx).astype(np.float32)
+        hit_y = (t * dy).astype(np.float32)
+        hit_z = (lidar_z + t * dz).astype(np.float32)
+
+        valid = t < (far_clip - 0.5)
+
+        on_ground = valid & (hit_z < 0.3)
+        on_lane = on_ground & (
+            (np.abs(hit_y - 1.5) < 0.15) | (np.abs(hit_y + 1.5) < 0.15)
+        )
+        on_road = on_ground & ~on_lane
+        on_wall = valid & ~on_ground
+
+        intensity = np.zeros((64, 1800), dtype=np.float32)
+        n_lane = int(on_lane.sum())
+        n_road = int(on_road.sum())
+        n_wall = int(on_wall.sum())
+        if n_lane:
+            intensity[on_lane] = (0.85 + rng.uniform(0, 0.12, n_lane)).astype(np.float32)
+        if n_road:
+            intensity[on_road] = (0.15 + rng.uniform(0, 0.18, n_road)).astype(np.float32)
+        if n_wall:
+            intensity[on_wall] = (0.25 + rng.uniform(0, 0.20, n_wall)).astype(np.float32)
+
+        vf = valid.ravel()
+        raw = np.column_stack([
+            hit_x.ravel()[vf],
+            hit_y.ravel()[vf],
+            hit_z.ravel()[vf],
+            intensity.ravel()[vf],
+        ]).astype(np.float32)
+
+        gnd_mask = raw[:, 2] < 0.15
+        _write_points_bin(frames_dir / f"frame_{frame_idx}_raw.bin", raw)
+        _write_points_bin(frames_dir / f"frame_{frame_idx}_ground.bin", raw[gnd_mask])
+        _write_points_bin(frames_dir / f"frame_{frame_idx}_obstacles.bin", raw[~gnd_mask])
+        print(
+            f"[frames] frame {frame_idx}: {len(raw):,} pts "
+            f"({gnd_mask.sum():,} ground, {(~gnd_mask).sum():,} obstacles)"
+        )
 
 
 def _write_points_bin(path: Path, points: np.ndarray) -> None:

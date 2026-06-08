@@ -5,6 +5,7 @@ import type {
   QAReport,
   ViewMode,
 } from '../types/spatial.js';
+import type { FrameSelector, StageSelector } from '../io/DataLoader.js';
 
 export type LayerKey = 'pointCloud' | 'features' | 'qa';
 
@@ -16,6 +17,7 @@ type SidebarCallbacks = {
   onViewToggle: () => void;
   onResetCamera: () => void;
   onRunPipeline: () => void;
+  onSceneChange: (frame: FrameSelector, stage: StageSelector) => void;
 };
 
 const LAYER_CONFIG: Array<{ key: LayerKey; label: string; color: string; shortcut: string }> = [
@@ -27,6 +29,8 @@ const LAYER_CONFIG: Array<{ key: LayerKey; label: string; color: string; shortcu
 export class Sidebar {
   private readonly layerState: LayerState = { pointCloud: true, features: true, qa: true };
   private colorMode: ColorMode = 'intensity';
+  private currentFrame: FrameSelector = 0;
+  private currentStage: StageSelector = 'raw';
 
   private fpsEl!: HTMLElement;
   private selectedEl!: HTMLElement;
@@ -38,6 +42,9 @@ export class Sidebar {
   private pointCountEl!: HTMLElement;
   private pipelineBtnEl!: HTMLButtonElement;
   private pipelineStatusEl!: HTMLElement;
+  private frameBtns: Map<string, HTMLButtonElement> = new Map();
+  private stageBtns: Map<StageSelector, HTMLButtonElement> = new Map();
+  private stageSectionEl!: HTMLElement;
 
   constructor(private readonly callbacks: SidebarCallbacks) {
     this.buildDOM();
@@ -54,6 +61,27 @@ export class Sidebar {
         <div class="sb-section-label">Pipeline</div>
         <button class="sb-run-btn" id="run-pipeline-btn">Run Pipeline</button>
         <div id="pipeline-status" class="sb-pipeline-status"></div>
+      </div>
+
+      <div class="sb-section">
+        <div class="sb-section-label">Scene</div>
+        <div class="sb-btn-group" id="scene-frame-group">
+          <button class="sb-scene-btn active" data-frame="0">Frame 0</button>
+          <button class="sb-scene-btn" data-frame="1">Frame 1</button>
+          <button class="sb-scene-btn" data-frame="2">Frame 2</button>
+          <button class="sb-scene-btn" data-frame="3">Frame 3</button>
+          <button class="sb-scene-btn" data-frame="4">Frame 4</button>
+          <button class="sb-scene-btn" data-frame="accumulated">Accum.</button>
+        </div>
+      </div>
+
+      <div class="sb-section" id="stage-section">
+        <div class="sb-section-label">Stage</div>
+        <div class="sb-btn-group">
+          <button class="sb-stage-btn active" data-stage="raw">Raw</button>
+          <button class="sb-stage-btn" data-stage="ground">Ground</button>
+          <button class="sb-stage-btn" data-stage="obstacles">Obstacles</button>
+        </div>
       </div>
 
       <div class="sb-section">
@@ -146,6 +174,47 @@ export class Sidebar {
     this.pipelineBtnEl.addEventListener('click', () => {
       this.callbacks.onRunPipeline();
     });
+
+    // Scene: frame selector buttons
+    const frameGroup = document.getElementById('scene-frame-group')!;
+    frameGroup.querySelectorAll<HTMLButtonElement>('.sb-scene-btn').forEach((btn) => {
+      const raw = btn.dataset.frame!;
+      const frame: FrameSelector = raw === 'accumulated' ? 'accumulated' : parseInt(raw, 10);
+      this.frameBtns.set(raw, btn);
+      btn.addEventListener('click', () => this._selectScene(frame, this.currentStage));
+    });
+
+    // Stage: stage selector buttons
+    this.stageSectionEl = document.getElementById('stage-section')!;
+    document.querySelectorAll<HTMLButtonElement>('.sb-stage-btn').forEach((btn) => {
+      const stage = btn.dataset.stage as StageSelector;
+      this.stageBtns.set(stage, btn);
+      btn.addEventListener('click', () => {
+        if (!btn.disabled) this._selectScene(this.currentFrame, stage);
+      });
+    });
+  }
+
+  private _selectScene(frame: FrameSelector, stage: StageSelector): void {
+    this.currentFrame = frame;
+    // Accumulated always shows raw; stage buttons disabled
+    const effectiveStage: StageSelector = frame === 'accumulated' ? 'raw' : stage;
+    this.currentStage = effectiveStage;
+
+    // Update frame button active state
+    this.frameBtns.forEach((btn, key) => {
+      const match = frame === 'accumulated' ? key === 'accumulated' : key === String(frame);
+      btn.classList.toggle('active', match);
+    });
+
+    // Update stage button active state + disabled
+    const isAccum = frame === 'accumulated';
+    this.stageBtns.forEach((btn, s) => {
+      btn.classList.toggle('active', s === effectiveStage);
+      btn.disabled = isAccum;
+    });
+
+    this.callbacks.onSceneChange(frame, effectiveStage);
   }
 
   setLayer(key: LayerKey, enabled: boolean): void {
@@ -277,11 +346,11 @@ export class Sidebar {
     this.selectedEl.textContent = 'click a feature line';
   }
 
-  setSceneMeta(points: number, features: number): void {
+  setSceneMeta(points: number, features: number, sceneLabel = 'KITTI 0005'): void {
     const el = document.getElementById('scene-meta');
     if (!el) return;
     const pStr = points >= 1000 ? `${(points / 1000).toFixed(0)}K pts` : `${points} pts`;
-    el.textContent = `KITTI 0005 · ${pStr} · ${features} features`;
+    el.textContent = `${sceneLabel} · ${pStr} · ${features} features`;
     el.hidden = false;
   }
 

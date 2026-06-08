@@ -54,6 +54,25 @@ export async function loadPointCloudBin(url: string): Promise<PointCloudData | n
   }
 }
 
+export type FrameSelector = number | 'accumulated';
+export type StageSelector = 'raw' | 'ground' | 'obstacles';
+
+/**
+ * Load a specific frame/stage combination.
+ * accumulated → loads the full multi-frame accumulation (points.bin).
+ * frame N + stage → loads frames/frame_{N}_{stage}.bin.
+ */
+export async function loadFrameStage(
+  frame: FrameSelector,
+  stage: StageSelector,
+): Promise<PointCloudData | null> {
+  const url =
+    frame === 'accumulated'
+      ? '/data/points.bin'
+      : `/data/frames/frame_${frame}_${stage}.bin`;
+  return loadPointCloudBin(url);
+}
+
 export async function loadFeatures(url: string): Promise<GeoJSONFeatureCollection | null> {
   try {
     const res = await fetch(url);
