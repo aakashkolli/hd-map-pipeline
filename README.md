@@ -1,10 +1,106 @@
 # HD Map Feature Extraction Pipeline
 
-A production-oriented LiDAR feature extraction pipeline for autonomous vehicle HD mapping. Ingests raw point cloud frames, transforms them into a unified ENU world frame, separates ground from obstacles via RANSAC with seed-set pre-filtering, projects ground returns into a Bird's Eye View intensity image, extracts lane boundary polylines through DBSCAN clustering, scores them against ground truth with completeness and false-positive metrics, and renders everything in an interactive Three.js inspection viewer.
+LiDAR mapping pipeline that converts raw autonomous vehicle point clouds into lane-boundary map features.
 
-Built to demonstrate fit for day-to-day AV mapping infrastructure work: data pipelines over sensor data, automation algorithms for feature extraction, QA tooling for map validation, and ML integration on spatial datasets.
+The system ingests LiDAR scans and vehicle poses, accumulates them into a global ENU frame, separates ground from obstacles, projects road-surface returns into a Bird's Eye View (BEV) representation, extracts lane-boundary polylines using geometric and neural methods, evaluates results against ground truth, and visualizes the full workflow in a Three.js inspection tool.
 
-**Live demo:** https://aakashkolli.github.io/hd-map-pipeline/ — deploys automatically on every push to `main` via GitHub Actions, no server required.
+## Motivation
+
+Modern HD maps are built from large-scale LiDAR surveys. Before map features are able to be validated by humans, raw point clouds must be (1) localized into a common world frame, (2) filtered and segmented, (3) converted into semantic map primitives, and (4) evaluated against reference maps.
+
+This project implements a basic version of this workflow, with a focus on lane-boundary extraction and map QA.
+
+## Overview
+
+Given raw LiDAR + vehicle poses, this system:
+
+1. Aligns all scans into a global ENU frame
+2. Filters ground points using RANSAC plane fitting
+3. Builds a BEV raster of road surface intensity
+4. Extracts lane boundaries via:
+   - geometric clustering (DBSCAN + RDP)
+   - neural segmentation (U-Net)
+5. Fuses outputs into world-frame lane polylines
+6. Evaluates against ground truth (distance + completeness metrics)
+7. Visualizes results in an interactive WebGL viewer
+
+**Output:** GeoJSON lane polylines + QA metrics + rendered 3D scene
+
+---
+
+## Pipeline
+
+### Stage 1: Ingest
+
+Transforms LiDAR frames into a global ENU coordinate system using GPS/IMU poses and sensor calibration parameters. Outputs are stored as Parquet point clouds.
+
+### Stage 2: Filter
+
+Separates road-surface points from obstacles using seed-constrained RANSAC plane fitting.
+
+Key design choice: RANSAC is initialized on a restricted height band around the ego vehicle, preventing vertical structures (e.g., walls, facades) from dominating plane estimation in dense urban scenes.
+
+### Stage 3: BEV Projection
+
+Projects ground-classified points into a top-down intensity image at 5 cm/pixel resolution using per-scan intensity normalization.
+
+This per-frame normalization avoids sensor- and weather-dependent intensity bias (e.g., wet vs. dry pavement), improving consistency of lane-marking visibility across scenes.
+
+### Stage 4: Feature Extraction
+
+Lane boundaries are extracted via two parallel paths:
+
+- **Geometric path:** High-intensity ground pixels are clustered using DBSCAN in world-frame XY coordinates (not BEV pixel space), then converted into polylines using Ramer–Douglas–Peucker simplification.
+- **Neural path:** A lightweight U-Net operating on BEV imagery produces lane predictions that are back-projected into world coordinates.
+
+Key design choice: clustering is performed in world space to avoid BEV projection artifacts that can merge adjacent lane structures at high curvature or tight intersections.
+
+Outputs are fused into a single set of lane-boundary polylines in ENU coordinates.
+
+### Stage 5: QA
+
+Extracted features are evaluated against reference annotations using:
+
+- Completeness (fraction of ground-truth features matched within tolerance)
+- Hausdorff distance (P50 / P95 positional error)
+- False-positive rate
+- Classification accuracy
+
+---
+
+## Architecture
+
+```mermaid
+graph TD
+    A[KITTI nuScenes] --> B[Ingest]
+    B --> C[Ground Segmentation]
+    C --> D[BEV Projection]
+    D --> E[Geometric Extraction]
+    D --> F[UNet Inference]
+    E --> G[Fusion]
+    F --> G
+    G --> H[QA Metrics]
+    H --> I[ThreeJS Viewer]
+```
+
+### Module structure
+
+```text
+src/
+  geometry/    # SE3 rigid body transforms, RDP polyline simplification,
+                 Hausdorff distance. No internal imports. Everything else
+                 depends on this layer.
+  data/        # KITTI (.bin + oxts + calib) and nuScenes parsers.
+                 Outputs SE3 poses and (N,4) float32 point arrays.
+  filters/     # Voxel grid (C++ pybind11), radius outlier removal,
+                 RANSAC ground plane separation.
+  ml/          # BEVSegNet U-Net, training loop, batch inference +
+                 back-projection to 3D world coordinates.
+  pipeline/    # Ingest, BEV projection, lane extraction, QA, fusion.
+                 Stages communicate through Parquet and GeoJSON files.
+  viz/         # Standalone Three.js application. Reads GeoJSON and
+                 binary point cloud files. No Python imports.
+```
 
 ---
 
@@ -32,149 +128,22 @@ Open `http://localhost:5173/?benchmark=1` for the 500K-point benchmark scene.
 
 ---
 
-## Architecture
-
-```mermaid
-flowchart LR
-  A[KITTI LiDAR/OXTS/Calib] --> B[Ingest: world ENU parquet]
-  B --> C[Filters: voxel/outlier/ground]
-  C --> D[BEV projection]
-  D --> E[Geometric extraction]
-  D --> F[U-Net inference]
-  E --> G[Fusion]
-  F --> G
-  G --> H[QA metrics vs GT]
-  G --> I[Three.js viewer]
-  H --> I
-```
-
-### Module structure
-
-```
-src/
-  geometry/    — SE3 rigid body transforms, RDP polyline simplification,
-                 Hausdorff distance. No internal imports. Everything else
-                 depends on this layer.
-  data/        — KITTI (.bin + oxts + calib) and nuScenes parsers.
-                 Outputs SE3 poses and (N,4) float32 point arrays.
-  filters/     — Voxel grid (C++ pybind11), radius outlier removal,
-                 RANSAC ground plane separation.
-  ml/          — BEVSegNet U-Net, training loop, batch inference +
-                 back-projection to 3D world coordinates.
-  pipeline/    — Ingest, BEV projection, lane extraction, QA, fusion.
-                 Stages communicate through Parquet and GeoJSON files.
-  viz/         — Standalone Three.js application. Reads GeoJSON and
-                 binary point cloud files. No Python imports.
-```
-
-All numeric parameters live in `configs/*.yaml` — no magic numbers in source.
-
----
-
-## Pipeline Stages
-
-### Stage 1 — Ingest
-
-Loads KITTI `.bin` LiDAR frames, parses GPS/IMU poses as SE3 transforms, applies the vehicle→sensor calibration matrix from `calib/`, and accumulates N frames into a single point cloud in the ENU world frame. Output: `accumulated.parquet` with columns `x, y, z, intensity, timestamp, frame_id` (all spatial columns float32).
-
-### Stage 2 — Filter
-
-**Voxel downsample:** C++ pybind11 extension, 5 cm voxel grid. 2.14× faster than the NumPy fallback (32.98 ms vs 70.63 ms for 200K points). Radius outlier removal removes isolated points from sparse scan edges.
-
-**Ground separation (RANSAC):** Seed-set pre-filtering restricts the initial candidate pool to points within a height band above the vehicle (z ∈ [−0.5, 0.8] m in vehicle frame, configurable). RANSAC fits a plane to the seed set, then refines inlier classification over the full cloud. Without seed pre-filtering, RANSAC frequently fits walls or building facades on urban scenes — the seed set forces the initial plane into the ground region before RANSAC runs.
-
-### Stage 3 — BEV Projection
-
-Projects ground-classified points into a top-down intensity image at 5 cm/pixel resolution. Normalization is **per-scan**: each frame divides by its own maximum intensity rather than a global constant. This ensures consistent lane marking detection across different LiDAR sensors and weather conditions (wet pavement attenuates returns differently than dry).
-
-### Stage 4 — Feature Extraction
-
-High-intensity ground pixels are back-projected to 3D and clustered with DBSCAN in world-frame XY coordinates (not pixel space — this prevents merging nearby parallel lanes that appear connected in the BEV image at tight corners). Clusters are fit with polylines and simplified via Ramer–Douglas–Peucker. Output: `features.geojson` with world-frame ENU coordinates.
-
-A lightweight U-Net (BEVSegNet, ~2M parameters) trained on nuScenes-mini BEV images provides a second detection path. Predictions are back-projected to 3D via the inverse BEV transform and fused with geometric detections. The model is **trained on nuScenes, evaluated on KITTI** — cross-dataset to demonstrate generalization rather than overfitting to the training distribution.
-
-### Stage 5 — QA
-
-Compares extracted features against ground truth annotations (nuScenes map layer or manually annotated KITTI reference). Metrics:
-
-| Metric | Definition |
-|---|---|
-| Completeness | Fraction of GT features matched by a prediction within a distance threshold |
-| Positional accuracy P50/P95 | Median and 95th-percentile Hausdorff distance between matched pairs |
-| False positive rate | Fraction of predictions with no GT match |
-| Classification accuracy | Per-class label agreement on matched pairs |
-
----
-
-## Three.js Viewer
-
-The viewer is modeled after internal AV map QA tooling: dark background, system-ui font, no decorative chrome. It lets an engineer inspect extracted features against the point cloud, switch between individual scan frames (raw / ground / obstacle splits), and compare what the pipeline sees against a top-down LiDAR intensity image.
-
-### Frame and Stage Selector
-
-The sidebar **Scene** section selects which point cloud to display:
-
-- **Frame 0–4**: individual KITTI frames transformed to world ENU, ~122K points each
-- **Accumulated**: all frames merged into a single cloud (~610K points)
-
-The **Stage** section (disabled for Accumulated) selects the pipeline split:
-
-- **Raw**: full Velodyne HDL-64E scan (road surface + vehicles + buildings)
-- **Ground**: RANSAC inliers — road surface and lane markings
-- **Obstacles**: non-ground returns — vehicles, pedestrians, vegetation
-
-### Keyboard Shortcuts
-
-| Key | Action |
-|---|---|
-| `1` | Toggle point cloud visibility |
-| `2` | Toggle feature line overlay |
-| `3` | Toggle QA annotation overlay |
-| `I` | Point cloud color: intensity (turbo colormap) |
-| `H` | Point cloud color: height (turbo colormap) |
-| `V` | Toggle perspective / BEV top-down orthographic |
-| `B` | Toggle BEV intensity image panel (80 m × 80 m, 5 cm/px) |
-| `R` | Reset camera to scene center |
-| Click | Select feature line — shows type, confidence, source, vertex count in sidebar |
-| Drag | Orbit (perspective) / pan (BEV) |
-| Scroll | Zoom |
-
-### BEV Image Panel
-
-Press `B` or click **BEV image** in the sidebar to open a floating 300×300 px panel showing the Bird's Eye View intensity projection for the selected frame. The panel updates automatically when you switch frames. The image is the direct input to the lane extraction stage — bright horizontal streaks are lane markings.
-
-### Performance
-
-500K points at **60.66 FPS** in GPU-backed Chrome via `THREE.BufferGeometry` with `Float32Array` typed arrays. Color mode switches update the vertex color buffer attribute in place — no geometry rebuild required (`< 1 ms` per switch).
-
-**QA overlays:** False positive features render in amber (`#f59e0b`), missed GT features in red (`#ef4444`), matching the color convention used in production map QA dashboards.
-
----
-
-## GitHub Pages Deployment
-
-The viewer builds to `docs/` and deploys automatically on every push to `main` via GitHub Actions (`.github/workflows/deploy.yml`). Pages is enabled on this repo — every push to `main` triggers a redeploy automatically.
-
-The deployed viewer includes all pre-computed pipeline outputs (point cloud frames, BEV images, extracted features, QA report). The **Run Pipeline** button requires a running API server and will show an error message on the static Pages deployment — this is expected.
-
----
-
 ## Dataset Setup
 
-**KITTI Raw** — download only the sequences needed:
+**KITTI Raw** - download only the sequences needed:
 
 ```text
 http://www.cvlibs.net/datasets/kitti/raw_data.php
-  → 2011_09_26_drive_0005_sync  (velodyne_points, oxts)
-  → 2011_09_26_drive_0009_sync  (velodyne_points, oxts)
-  → 2011_09_26_calib
+  -> 2011_09_26_drive_0005_sync  (velodyne_points, oxts)
+  -> 2011_09_26_drive_0009_sync  (velodyne_points, oxts)
+  -> 2011_09_26_calib
 ```
 
-**nuScenes** — v1.0-mini is sufficient for training data preparation:
+**nuScenes** - v1.0-mini is sufficient for training data preparation:
 
 ```text
 https://www.nuscenes.org/nuscenes
-  → v1.0-mini
+  -> v1.0-mini
 ```
 
 Expected layout:
@@ -201,13 +170,22 @@ python scripts/prepare_nuscenes_training.py \
 
 ---
 
-## Benchmarks
+## Results
 
-Hardware: Apple Silicon (`arm64`), macOS.
+The pipeline produces structured lane-boundary map features from raw LiDAR sequences and exports them as world-frame geometric primitives suitable for downstream HD map construction and QA workflows.
+
+Outputs include:
+
+- World-frame point clouds (ENU)
+- Lane-boundary polylines (GeoJSON)
+- QA evaluation metrics
+- Interactive visualization in Three.js
+
+Tested on Apple Silicon, macOS.
 
 | Stage | Target | Result | Status |
 |---|---|---|---|
-| Voxel downsample (C++ pybind11, 200K pts → 20K voxels) | < 80 ms | **32.98 ms** | ✓ |
+| Voxel downsample (C++ pybind11, 200K pts -> 20K voxels) | < 80 ms | **32.98 ms** | ✓ |
 | NumPy voxel fallback | — | 70.63 ms | — |
 | Three.js viewer, 500K points, GPU Chrome | ≥ 30 fps | **60.66 FPS** | ✓ |
 | Color mode switch | < 50 ms | < 1 ms (buffer update only) | ✓ |
@@ -224,26 +202,25 @@ The C++ extension is a pybind11 voxel grid that sorts points into spatial bins u
 pytest tests/ -v
 ```
 
-63 tests across geometry, filters, pipeline, ML, and visualization. Tests run entirely on synthetic fixtures — no downloaded datasets required. Cross-dataset evaluation (nuScenes→KITTI) is exercised in `tests/ml/`.
+Coverage includes geometry, data ingestion, ground segmentation, BEV generation, feature extraction, QA metrics, ML inference, and visualization.
 
-```
+```text
 tests/
-  geometry/     — SE3 round-trip, RDP simplification, Hausdorff distance
-  filters/      — RANSAC synthetic plane, seed-set isolation, voxel grid
-  pipeline/     — BEV pixel location, lane extraction, QA edge cases
-  ml/           — U-Net forward pass, parameter count, training convergence
-  data/         — KITTI parser schema, nuScenes annotation alignment
-  viz/          — Viewer benchmark mode, FPS metrics, headless script
+  geometry/     # SE3 round-trip, RDP simplification, Hausdorff distance
+  filters/      # RANSAC synthetic plane, seed-set isolation, voxel grid
+  pipeline/     # BEV pixel location, lane extraction, QA edge cases
+  ml/           # U-Net forward pass, parameter count, training convergence
+  data/         # KITTI parser schema, nuScenes annotation alignment
+  viz/          # Viewer benchmark mode, FPS metrics, headless script
 ```
 
 ---
 
-## Known Limitations
+## Limitations
 
-- **Banked roads:** RANSAC fits a single plane per accumulated segment. Roads with > 5° cross-slope (banked turns, ramps) cause the fitted plane to tilt, misclassifying some road surface points as obstacles. Production systems use a terrain model or multi-plane fitting.
-- **Rain / wet pavement:** Intensity-percentile thresholding adapts to overall scan brightness but cannot distinguish specular water returns from lane markings. A learned threshold or multi-return fusion is needed for adverse weather.
-- **BEV annotation rasterization:** nuScenes training masks rasterize annotation polygon vertices rather than filling thick lane polygons. This underrepresents wide road markings at training time.
-- **U-Net evaluation:** Cross-dataset smoke evaluation is synthetic unless real KITTI data and trained model weights are present.
-- **OXTS stub data:** The included KITTI 0005 frames use constant GPS coordinates (lat=49.0, lon=8.0) — the vehicle does not move between frames in world ENU. Individual frame views show real sensor geometry; the Accumulated view shows all frames co-located at the origin.
-- **Run Pipeline on Pages:** The static GitHub Pages deployment cannot reach the Python API server. Clicking "Run Pipeline" will report "could not reach API server" — this is expected. The pre-computed pipeline outputs are served as static files.
-- **Viewer benchmark:** The 500K-point scene uses a synthetic world-frame cloud. Real KITTI scene FPS should be re-measured after loading full survey data — memory layout differs between synthetic grid and real scan patterns.
+- Single-plane RANSAC struggles on strongly banked roads.
+- Intensity thresholding remains sensitive to adverse weather.
+- Cross-dataset evaluation requires trained model weights and real data.
+- Large-scale survey routes are not yet streamed or tiled.
+- The GitHub Pages deployment serves precomputed outputs only.
+
